@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="currenciesList">
+        <item>@string/currency_euro</item>
+        <item>@string/currency_dollar</item>
+        <item>@string/currency_pound</item>
+        <item>@string/currency_ruble</item>
+    </string-array>
+
+    <string-array name="currenciesValues">
+        <item>euro</item>
+        <item>dollar</item>
+        <item>pound</item>
+        <item>ruble</item>
+    </string-array>
+
+</resources>
