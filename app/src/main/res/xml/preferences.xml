@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:scrollbars="none">
+
+    <android.support.v7.preference.PreferenceCategory
+        android:key="themeCategoryKey"
+        android:title="@string/category_theme_title">
+
+        <SwitchPreferenceCompat
+            android:key="themeKey"
+            android:summaryOff="@string/change_to_dark_theme"
+            android:summaryOn="@string/change_to_light_theme"
+            android:title="@string/change_theme" />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory
+        android:key="currencyKeyCategory"
+        android:title="@string/category_currency_title">
+
+        <ListPreference
+            android:defaultValue="euro"
+            android:entries="@array/currenciesList"
+            android:entryValues="@array/currenciesValues"
+            android:key="currencyKey"
+            android:summary="@string/summary_currency"
+            android:title="@string/currency_title" />
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory
+        android:key="notificationsCategoryKey"
+        android:title="@string/category_notifications_title">
+
+        <SwitchPreferenceCompat
+            android:key="notificationsKey"
+            android:summaryOff="@string/enable_notifications"
+            android:summaryOn="@string/disable_notifications"
+            android:title="@string/set_notifications" />
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory
+        android:key="creditCardCategoryKey"
+        android:title="@string/category_credit_card_title">
+
+        <EditTextPreference
+            android:name="creditCardPreference"
+            android:key="creditCardKey"
+            android:summary="@string/summary_credit_card"
+            android:title="@string/credit_card_title" />
+    </android.support.v7.preference.PreferenceCategory>
+
+</PreferenceScreen>
