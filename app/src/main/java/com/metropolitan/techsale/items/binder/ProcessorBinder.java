@@ -35,7 +35,7 @@ public class ProcessorBinder  extends ItemBinder<Processor, ProcessorBinder.Proc
         holder.textViewItemPrice.setText("Price: $" + item.getPrice());
         holder.textViewProcessorCores.setText(String.format("Cores: %d", item.getCores()));
         holder.textViewProcessorSpeed.setText(String.format("Speed: %s", item.getSpeed()));
-        //holder.textViewRamType.setText(String.format("Socket: %s", item.getSocket()));
+        holder.textViewProcessorSocket.setText(String.format("Socket: %s", item.getSocket()));
     }
 
     static class ProcessorViewHolder extends ItemViewHolder<Processor> {
@@ -45,7 +45,7 @@ public class ProcessorBinder  extends ItemBinder<Processor, ProcessorBinder.Proc
         TextView textViewItemPrice;
         TextView textViewProcessorCores;
         TextView textViewProcessorSpeed;
-       // TextView textViewRamType;
+        TextView textViewProcessorSocket;
 
         public ProcessorViewHolder(View itemView) {
             super(itemView);
@@ -55,7 +55,7 @@ public class ProcessorBinder  extends ItemBinder<Processor, ProcessorBinder.Proc
             textViewItemPrice = itemView.findViewById(R.id.textViewPrice);
             textViewProcessorCores = itemView.findViewById(R.id.textViewProcessorCores);
             textViewProcessorSpeed = itemView.findViewById(R.id.textViewProcessorSpeed);
-            //textViewRamType = itemView.findViewById(R.id.textViewRamType);
+            textViewProcessorSocket = itemView.findViewById(R.id.textViewProcessorSocket);
         }
     }
 }
