@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Toast;
 
 import com.metropolitan.techsale.R;
@@ -17,6 +16,7 @@ import com.metropolitan.techsale.utils.ExtraKeys;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import mva2.adapter.ListSection;
 import mva2.adapter.MultiViewAdapter;
@@ -54,6 +54,6 @@ public class ItemListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        Toast.makeText(this, "Items " + recyclerView.getAdapter().getItemCount(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Items " + Objects.requireNonNull(recyclerView.getAdapter()).getItemCount(), Toast.LENGTH_LONG).show();
     }
 }

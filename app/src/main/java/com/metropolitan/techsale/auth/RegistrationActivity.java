@@ -7,7 +7,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.metropolitan.techsale.R;
+import com.metropolitan.techsale.settings.SettingsFragment;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,11 +28,24 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        showSettings();
         password = findViewById(R.id.editTextPassword);
         repeatPassword = findViewById(R.id.editTextPaswordConfirmation);
         email = findViewById(R.id.editTextEmail);
         firstName = findViewById(R.id.editTextFirstName);
         lastName = findViewById(R.id.editTextLastName);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    private void showSettings() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.settingsActivity, new SettingsFragment()).commit();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.settings));
     }
 
     public void register(View view) {

@@ -1,9 +1,12 @@
 package com.metropolitan.techsale.settings;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.metropolitan.techsale.R;
+import com.metropolitan.techsale.utils.Utils;
 
 import java.util.Objects;
 
@@ -11,6 +14,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Utils.setStyleTheme(preferences, this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         showSettings();

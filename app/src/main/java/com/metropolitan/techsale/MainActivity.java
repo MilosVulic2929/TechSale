@@ -1,6 +1,8 @@
 package com.metropolitan.techsale;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,13 +13,19 @@ import com.metropolitan.techsale.auth.RegistrationActivity;
 import com.metropolitan.techsale.items.ItemListActivity;
 import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.utils.ExtraKeys;
+import com.metropolitan.techsale.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static MainActivity mainActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Utils.setStyleTheme(preferences, this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainActivity = this;
     }
 
     @Override

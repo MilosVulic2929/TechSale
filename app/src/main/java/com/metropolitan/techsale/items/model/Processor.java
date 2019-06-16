@@ -3,7 +3,6 @@ package com.metropolitan.techsale.items.model;
 public class Processor extends Item{
 
     private int cores;
-
     private double speed;
 
     // intel 1151, amd am4...

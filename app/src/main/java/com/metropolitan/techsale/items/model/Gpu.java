@@ -3,15 +3,12 @@ package com.metropolitan.techsale.items.model;
 public class Gpu extends Item {
 
     private int memory;
-
     private int cores;
-
     private int coreClock;
-
     private int boostClock;
 
-    public Gpu() {}
-
+    public Gpu() {
+    }
 
     public Gpu(int id, String name, String make, double price, int quantity, int memory, int cores, int coreClock, int boostClock) {
         super(id, name, make, price, quantity);

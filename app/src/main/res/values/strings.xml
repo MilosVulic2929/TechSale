@@ -35,5 +35,8 @@
     <string name="guest">Guest</string>
     <string name="welcome">Welcome to TechSale</string>
     <string name="add_to_cart">Add to Cart</string>
+    <string name="register_wizard">Dont have an account, you can create account now</string>
+    <string name="credit_card">Credit card number</string>
+    <string name="expiration_date">Expiration date</string>
 
 </resources>
