@@ -5,15 +5,10 @@ import java.util.Objects;
 public class Item {
 
     private int id;
-
     private String name;
-
     private String make;
-
     private double price;
-
     private int quantity;
-
     private String imageUrl;
 
     public Item() { }

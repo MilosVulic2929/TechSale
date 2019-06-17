@@ -6,7 +6,6 @@ import android.os.Bundle;
 import com.metropolitan.techsale.R;
 
 import java.util.Objects;
-
 public class PaymentActivity extends AppCompatActivity {
 
     @Override

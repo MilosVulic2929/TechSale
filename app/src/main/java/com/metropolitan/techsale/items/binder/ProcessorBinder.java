@@ -64,7 +64,7 @@ public class ProcessorBinder  extends ItemBinder<Processor, ProcessorBinder.Proc
         TextView textViewProcessorSpeed;
         TextView textViewProcessorSocket;
 
-        public ProcessorViewHolder(View itemView) {
+        ProcessorViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewItem);
             textViewItemName = itemView.findViewById(R.id.textViewItemName);
