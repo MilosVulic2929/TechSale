@@ -11,8 +11,8 @@ public class RamMemory extends Item {
 
     public RamMemory() { }
 
-    public RamMemory(int id, String name, String make, double price, int quantity, int memory, int frequency, String type) {
-        super(id, name, make, price, quantity);
+    public RamMemory(int id, String name, String make, double price, int quantity, int memory, int frequency, String type, String imageUrl) {
+        super(id, name, make, price, quantity, imageUrl);
         this.memory = memory;
         this.frequency = frequency;
         this.type = type;

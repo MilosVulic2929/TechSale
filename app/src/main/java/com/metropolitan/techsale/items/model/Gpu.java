@@ -6,18 +6,18 @@ public class Gpu extends Item {
 
     private int cores;
 
-    private int coreClock;
+    private int memorySpeed;
 
     private int boostClock;
 
     public Gpu() {}
 
 
-    public Gpu(int id, String name, String make, double price, int quantity, int memory, int cores, int coreClock, int boostClock) {
-        super(id, name, make, price, quantity);
+    public Gpu(int id, String name, String make, double price, int quantity, int memory, int cores, int memorySpeed, int boostClock, String imageUrl) {
+        super(id, name, make, price, quantity, imageUrl);
         this.memory = memory;
         this.cores = cores;
-        this.coreClock = coreClock;
+        this.memorySpeed = memorySpeed;
         this.boostClock = boostClock;
     }
 
@@ -37,12 +37,12 @@ public class Gpu extends Item {
         this.cores = cores;
     }
 
-    public int getCoreClock() {
-        return coreClock;
+    public int getMemorySpeed() {
+        return memorySpeed;
     }
 
-    public void setCoreClock(int coreClock) {
-        this.coreClock = coreClock;
+    public void setMemorySpeed(int memorySpeed) {
+        this.memorySpeed = memorySpeed;
     }
 
     public int getBoostClock() {

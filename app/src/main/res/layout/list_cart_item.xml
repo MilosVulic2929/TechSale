@@ -30,56 +30,14 @@
             android:layout_marginStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/imageViewItem"
+            app:layout_constraintEnd_toStartOf="@id/buttonRemove"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonAddToCart"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/include"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/textViewGpuMemory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Memory" />
-
-            <TextView
-                android:id="@+id/textViewGpuCores"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Cores" />
-
-            <TextView
-                android:id="@+id/textViewGpuMemorySpeed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Core Clock" />
-
-            <TextView
-                android:id="@+id/textViewGpuBoostClock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Boost Clock" />
-
-        </LinearLayout>
-
         <Button
-            android:id="@+id/buttonAddToCart"
+            android:id="@+id/buttonRemove"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/button_circle"
-            android:text="+"
+            android:background="@android:drawable/ic_delete"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:layout_marginEnd="10dp"

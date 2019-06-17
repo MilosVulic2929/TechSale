@@ -11,30 +11,22 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.metropolitan.techsale.R;
 import com.metropolitan.techsale.items.model.Item;
-import com.metropolitan.techsale.items.model.RamMemory;
+import com.metropolitan.techsale.items.model.Storage;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
 
 import mva2.adapter.ItemBinder;
 import mva2.adapter.ItemViewHolder;
 
-/**
- * TODO info Binder za procesore u RecycleView
- */
-public class RamMemoryBinder extends ItemBinder<RamMemory, RamMemoryBinder.RamViewHolder> {
+public class StorageBinder  extends ItemBinder<Storage, StorageBinder.StorageViewHolder> {
 
     @Override
-    public RamViewHolder createViewHolder(ViewGroup parent) {
-        return new RamViewHolder(inflate(parent, R.layout.list_item_ram));
-    }
-
-    @Override
-    public boolean canBindData(Object item) {
-        return item instanceof RamMemory;
+    public StorageViewHolder createViewHolder(ViewGroup parent) {
+        return new StorageViewHolder(inflate(parent, R.layout.list_item_storage));
     }
 
     @SuppressWarnings("all")
     @Override
-    public void bindViewHolder(RamViewHolder holder, RamMemory item) {
+    public void bindViewHolder(StorageViewHolder holder, Storage item) {
         CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(holder.itemView.getContext());
         circularProgressDrawable.setStrokeWidth(5);
         circularProgressDrawable.setCenterRadius(32);
@@ -47,33 +39,38 @@ public class RamMemoryBinder extends ItemBinder<RamMemory, RamMemoryBinder.RamVi
         holder.textViewItemName.setText(String.format("Name: %s", item.getName()));
         holder.textViewItemMake.setText(String.format("Make: %s", item.getMake()));
         holder.textViewItemPrice.setText(String.format("Price: $%s", item.getPrice()));
-        holder.textViewItemType.setText("Type: RAM");
-        holder.textViewRamMemory.setText(String.format("Memory: %dGB", item.getMemory()));
-        holder.textViewRamFrequency.setText(String.format("Frequency: %dMHz", item.getFrequency()));
-        holder.textViewRamType.setText(String.format("Type: %s", item.getType()));
+        holder.textViewItemType.setText("Type: Storage");
+        holder.textViewStorageCapacity.setText(String.format("Capacity: %dGB", item.getCapacity()));
+        holder.textViewStorageType.setText(String.format("Disk Type: %s", item.getDiskType().toString()));
+        holder.textViewStorageSpeed.setText(String.format("Speed: %s", item.getSpeed()));
     }
 
-    static class RamViewHolder extends ItemViewHolder<RamMemory> {
+    @Override
+    public boolean canBindData(Object item) {
+        return item instanceof Storage;
+    }
+
+    static class StorageViewHolder extends ItemViewHolder<Storage> {
 
         ImageView imageView;
         TextView textViewItemName;
         TextView textViewItemMake;
         TextView textViewItemPrice;
         TextView textViewItemType;
-        TextView textViewRamMemory;
-        TextView textViewRamFrequency;
-        TextView textViewRamType;
+        TextView textViewStorageCapacity;
+        TextView textViewStorageType;
+        TextView textViewStorageSpeed;
 
-        public RamViewHolder(View itemView) {
+        public StorageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewItem);
             textViewItemName = itemView.findViewById(R.id.textViewItemName);
             textViewItemMake = itemView.findViewById(R.id.textViewItemMake);
             textViewItemPrice = itemView.findViewById(R.id.textViewItemPrice);
             textViewItemType = itemView.findViewById(R.id.textViewItemType);
-            textViewRamMemory = itemView.findViewById(R.id.textViewRamMemory);
-            textViewRamFrequency = itemView.findViewById(R.id.textViewRamFrequency);
-            textViewRamType = itemView.findViewById(R.id.textViewRamType);
+            textViewStorageCapacity = itemView.findViewById(R.id.textViewStorageCapacity);
+            textViewStorageType = itemView.findViewById(R.id.textViewStorageType);
+            textViewStorageSpeed = itemView.findViewById(R.id.textViewStorageSpeed);
             Button button = itemView.findViewById(R.id.buttonAddToCart);
             button.setOnClickListener(v -> {
                 Item item = getItem();
@@ -82,4 +79,5 @@ public class RamMemoryBinder extends ItemBinder<RamMemory, RamMemoryBinder.RamVi
             });
         }
     }
+
 }

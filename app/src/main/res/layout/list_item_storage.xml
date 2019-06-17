@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    app:cardUseCompatPadding="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardElevation="2dp"
-    app:cardUseCompatPadding="true">
+    android:layout_height="wrap_content">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/constraintLayout4"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <ImageView
             android:id="@+id/imageViewItem"
             android:layout_width="64dp"
@@ -23,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <include
-            android:id="@+id/include"
+            android:id="@+id/include4"
             layout="@layout/item_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,45 +32,36 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/linearLayout8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/buttonAddToCart"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@id/include"
+            app:layout_constraintStart_toEndOf="@id/include4"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textViewGpuMemory"
+                android:id="@+id/textViewStorageCapacity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Memory" />
+                android:text="Capacity" />
 
             <TextView
-                android:id="@+id/textViewGpuCores"
+                android:id="@+id/textViewStorageType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cores" />
+                android:text="Disk Type" />
 
             <TextView
-                android:id="@+id/textViewGpuMemorySpeed"
+                android:id="@+id/textViewStorageSpeed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Core Clock" />
-
-            <TextView
-                android:id="@+id/textViewGpuBoostClock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Boost Clock" />
-
+                android:text="Speed" />
         </LinearLayout>
 
         <Button
@@ -82,10 +72,9 @@
             android:text="+"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
     </android.support.constraint.ConstraintLayout>
-
 </android.support.v7.widget.CardView>

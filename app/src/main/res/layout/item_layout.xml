@@ -8,17 +8,27 @@
         android:id="@+id/textViewItemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/textViewMake"
+        android:id="@+id/textViewItemMake"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/textViewPrice"
+        android:id="@+id/textViewItemPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textViewItemType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textStyle="bold"/>
 </LinearLayout>
