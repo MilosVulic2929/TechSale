@@ -1,4 +1,4 @@
-package com.metropolitan.techsale.items.binder;
+package com.metropolitan.techsale.shoppingcart;
 
 import android.support.v4.widget.CircularProgressDrawable;
 import android.view.View;
@@ -10,31 +10,24 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.metropolitan.techsale.R;
+import com.metropolitan.techsale.items.model.Gpu;
 import com.metropolitan.techsale.items.model.Item;
+import com.metropolitan.techsale.items.model.Processor;
 import com.metropolitan.techsale.items.model.RamMemory;
-import com.metropolitan.techsale.shoppingcart.ShoppingCart;
+import com.metropolitan.techsale.items.model.Storage;
 
 import mva2.adapter.ItemBinder;
 import mva2.adapter.ItemViewHolder;
 
-/**
- * TODO info Binder za procesore u RecycleView
- */
-public class RamMemoryBinder extends ItemBinder<RamMemory, RamMemoryBinder.RamViewHolder> {
+public class CartItemBinder extends ItemBinder<Item, CartItemBinder.CartItemViewHolder> {
 
     @Override
-    public RamViewHolder createViewHolder(ViewGroup parent) {
-        return new RamViewHolder(inflate(parent, R.layout.list_item_ram));
+    public CartItemViewHolder createViewHolder(ViewGroup parent) {
+        return new CartItemViewHolder(inflate(parent, R.layout.list_cart_item));
     }
 
     @Override
-    public boolean canBindData(Object item) {
-        return item instanceof RamMemory;
-    }
-
-    @SuppressWarnings("all")
-    @Override
-    public void bindViewHolder(RamViewHolder holder, RamMemory item) {
+    public void bindViewHolder(CartItemViewHolder holder, Item item) {
         CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(holder.itemView.getContext());
         circularProgressDrawable.setStrokeWidth(5);
         circularProgressDrawable.setCenterRadius(32);
@@ -47,39 +40,51 @@ public class RamMemoryBinder extends ItemBinder<RamMemory, RamMemoryBinder.RamVi
         holder.textViewItemName.setText(String.format("Name: %s", item.getName()));
         holder.textViewItemMake.setText(String.format("Make: %s", item.getMake()));
         holder.textViewItemPrice.setText(String.format("Price: $%s", item.getPrice()));
-        holder.textViewItemType.setText("Type: RAM");
-        holder.textViewRamMemory.setText(String.format("Memory: %dGB", item.getMemory()));
-        holder.textViewRamFrequency.setText(String.format("Frequency: %dMHz", item.getFrequency()));
-        holder.textViewRamType.setText(String.format("Type: %s", item.getType()));
+        holder.textViewItemType.setText(String.format("Type: %s", findType(item)));
     }
 
-    static class RamViewHolder extends ItemViewHolder<RamMemory> {
+    @Override
+    public boolean canBindData(Object item) {
+        return item instanceof Item;
+    }
+
+    private String findType(Item item) {
+        if (item instanceof Gpu)
+            return "GPU";
+        else if (item instanceof Processor)
+            return "CPU";
+        else if (item instanceof RamMemory)
+            return "RAM";
+        else if (item instanceof Storage)
+            return "Storage";
+        return "";
+    }
+
+    static class CartItemViewHolder extends ItemViewHolder<Item> {
 
         ImageView imageView;
         TextView textViewItemName;
         TextView textViewItemMake;
         TextView textViewItemPrice;
         TextView textViewItemType;
-        TextView textViewRamMemory;
-        TextView textViewRamFrequency;
-        TextView textViewRamType;
 
-        public RamViewHolder(View itemView) {
+
+        public CartItemViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewItem);
             textViewItemName = itemView.findViewById(R.id.textViewItemName);
             textViewItemMake = itemView.findViewById(R.id.textViewItemMake);
             textViewItemPrice = itemView.findViewById(R.id.textViewItemPrice);
             textViewItemType = itemView.findViewById(R.id.textViewItemType);
-            textViewRamMemory = itemView.findViewById(R.id.textViewRamMemory);
-            textViewRamFrequency = itemView.findViewById(R.id.textViewRamFrequency);
-            textViewRamType = itemView.findViewById(R.id.textViewRamType);
-            Button button = itemView.findViewById(R.id.buttonAddToCart);
+            Button button = itemView.findViewById(R.id.buttonRemove);
             button.setOnClickListener(v -> {
                 Item item = getItem();
-                ShoppingCart.getInstance(itemView.getContext()).add(item);
-                Toast.makeText(itemView.getContext(), getItem().getName() + " added to cart", Toast.LENGTH_LONG).show();
+                ShoppingCart.getInstance(itemView.getContext()).remove(item);
+                Toast.makeText(itemView.getContext(), getItem().getName() + " removed from cart", Toast.LENGTH_LONG).show();
             });
         }
+
+
     }
+
 }

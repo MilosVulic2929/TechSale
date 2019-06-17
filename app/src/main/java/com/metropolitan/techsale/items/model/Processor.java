@@ -10,8 +10,8 @@ public class Processor extends Item{
 
     public Processor() { }
 
-    public Processor(int id, String name, String make, double price, int quantity, int cores, double speed, String socket) {
-        super(id, name, make, price, quantity);
+    public Processor(int id, String name, String make, double price, int quantity, int cores, double speed, String socket, String imageUrl) {
+        super(id, name, make, price, quantity, imageUrl);
         this.cores = cores;
         this.speed = speed;
         this.socket = socket;

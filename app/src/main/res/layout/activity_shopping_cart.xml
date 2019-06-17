@@ -5,44 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".items.ItemListActivity"
+    tools:context=".shoppingcart.ShoppingCartActivity"
     android:padding="10dp">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewItems"
+        android:id="@+id/recyclerViewShoppingCart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/textViewTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="@string/total_price"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <Button
-            android:id="@+id/buttonCart"
+            android:id="@+id/buttonPay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onClickGoToCart"
-            android:text="@string/cart" />
-
-        <Button
-            android:id="@+id/buttonPayment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClickGoToPayment"
-            android:text="@string/payment" />
-
+            android:text="@string/pay" />
         <Button
             android:id="@+id/buttonEmpty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onClickEmptyCart"
-            android:text="@string/empty_cart" />
+            android:text="@string/empty_cart"
+            android:onClick="onClickEmpty"/>
     </LinearLayout>
 
 </LinearLayout>
