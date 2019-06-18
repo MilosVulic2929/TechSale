@@ -1,5 +1,8 @@
 package com.metropolitan.techsale.shoppingcart;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +15,8 @@ import android.widget.Toast;
 
 import com.metropolitan.techsale.R;
 import com.metropolitan.techsale.items.model.Item;
+import com.metropolitan.techsale.payment.PaymentActivity;
+import com.metropolitan.techsale.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +41,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         itemSection.clear();
         itemSection.addAll(items);
         if (textTotal != null)
-            textTotal.setText("Total: " + total + ")");
+            textTotal.setText("Total Price: " + total + "");
         if (recyclerView != null && recyclerView.getAdapter() != null)
             recyclerView.getAdapter().notifyDataSetChanged();
     });
@@ -44,6 +49,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Utils.setStyleTheme(preferences, this);
         setContentView(R.layout.activity_shopping_cart);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
@@ -71,7 +78,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         for (Item i : items) {
             total += i.getPrice();
         }
-        textTotal.setText(String.format("Total: %s", total));
+        textTotal.setText(String.format("Total Price: %s", total));
 
     }
 
@@ -88,6 +95,15 @@ public class ShoppingCartActivity extends AppCompatActivity {
         ShoppingCart.getInstance(this).removeAll();
         Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
         Toast.makeText(this, "Shopping Cart is cleared", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickPayment(View view){
+        if(ShoppingCart.getInstance(this).getItems().size() > 0){
+            Intent intent = new Intent(this, PaymentActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Shopping Cart is empty", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

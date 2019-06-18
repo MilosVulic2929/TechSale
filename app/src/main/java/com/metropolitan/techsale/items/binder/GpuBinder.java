@@ -43,7 +43,7 @@ public class GpuBinder extends ItemBinder<Gpu, GpuBinder.GpuViewHolder> {
         holder.textViewItemType.setText("Type: GPU");
         holder.textViewGpuMemory.setText(String.format("Memory: %dGB", item.getMemory()));
         holder.textViewGpuCores.setText(String.format("Cores: %d", item.getCores()));
-        holder.textViewGpuMemorySpeed.setText(String.format("Memory Speed %dGbps", item.getMemorySpeed()));
+        holder.textViewGpuMemorySpeed.setText(String.format("Speed: %dGbps", item.getMemorySpeed()));
         holder.textViewGpuBoostClock.setText(String.format("Boost Clock: %dMHz", item.getBoostClock()));
     }
 

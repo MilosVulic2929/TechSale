@@ -28,7 +28,7 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        showSettings();
+        showSettings(); // TODO throwa exception, treba da se poziva ovde?
         password = findViewById(R.id.editTextPassword);
         repeatPassword = findViewById(R.id.editTextPaswordConfirmation);
         email = findViewById(R.id.editTextEmail);

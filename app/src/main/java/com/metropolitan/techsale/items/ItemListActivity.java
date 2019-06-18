@@ -1,6 +1,8 @@
 package com.metropolitan.techsale.items;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,9 +23,11 @@ import com.metropolitan.techsale.items.model.Item;
 import com.metropolitan.techsale.items.model.Processor;
 import com.metropolitan.techsale.items.model.RamMemory;
 import com.metropolitan.techsale.items.model.Storage;
+import com.metropolitan.techsale.payment.PaymentActivity;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
 import com.metropolitan.techsale.shoppingcart.ShoppingCartActivity;
 import com.metropolitan.techsale.utils.ExtraKeys;
+import com.metropolitan.techsale.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +62,8 @@ public class ItemListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Utils.setStyleTheme(preferences, this);
         setContentView(R.layout.activity_item_list);
         asGuest = getIntent().getBooleanExtra(ExtraKeys.EXTRA_KEY_GUEST, false);
         buttonCart = findViewById(R.id.buttonCart);
@@ -79,14 +85,21 @@ public class ItemListActivity extends AppCompatActivity {
     }
 
     public void onClickGoToCart(View view){
-        Intent intent = new Intent(this, ShoppingCartActivity.class);
-        startActivity(intent);
+        if(ShoppingCart.getInstance(this).getItems().size() > 0){
+            Intent intent = new Intent(this, ShoppingCartActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Shopping Cart is empty", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onClickGoToPayment(View view){
-        // TODO add PaymentActivity
-        //Intent intent = new Intent(this, ShoppingCartActivity.class);
-       // startActivity(intent);
+        if(ShoppingCart.getInstance(this).getItems().size() > 0){
+            Intent intent = new Intent(this, PaymentActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Shopping Cart is empty", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

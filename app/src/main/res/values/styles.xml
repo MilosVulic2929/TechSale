@@ -1,4 +1,8 @@
 <resources>
+    <!-- TODO info - dodato je da bi se menjala tema na CardView -->
+    <declare-styleable name = "cardStyle">
+        <attr name="cardStyle" format="reference" />
+    </declare-styleable>
 
     <!-- Base application theme. -->
     <style name="LightTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -7,6 +11,7 @@
         <item name="colorPrimaryDark">#004c40</item>
         <item name="colorAccent">#8bc34a</item>
         <item name="colorButtonNormal">#8bc34a</item>
+        <item name="cardStyle">@style/CardView.Dark</item>
     </style>
 
     <style name="DarkTheme" parent="ThemeOverlay.AppCompat.Dark">
@@ -16,6 +21,7 @@
         <item name="android:windowBackground">@color/colorBackGround</item>
         <item name="android:itemBackground">@color/colorItemMenuBack</item>
         <item name="android:itemTextAppearance">@style/menu_item_color</item>
+        <item name="cardStyle">@style/CardView.Dark</item>
     </style>
 
     <style name="menu_item_color">

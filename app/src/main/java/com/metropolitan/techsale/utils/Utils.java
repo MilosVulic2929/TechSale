@@ -7,6 +7,7 @@ import com.metropolitan.techsale.R;
 
 public class Utils {
     public static void setStyleTheme(SharedPreferences preferences, Context context) {
+
         if (preferences.getBoolean("themeKey", false)) {
             context.setTheme(R.style.DarkTheme);
         } else {
