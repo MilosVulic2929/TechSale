@@ -27,6 +27,8 @@ import com.metropolitan.techsale.items.model.Item;
 import com.metropolitan.techsale.items.model.Processor;
 import com.metropolitan.techsale.items.model.RamMemory;
 import com.metropolitan.techsale.items.model.Storage;
+import com.metropolitan.techsale.items.service.ItemServiceImpl;
+import com.metropolitan.techsale.items.service.ItemsService;
 import com.metropolitan.techsale.payment.PaymentActivity;
 import com.metropolitan.techsale.settings.SettingsFragment;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
@@ -37,7 +39,9 @@ import com.metropolitan.techsale.utils.Utils;
 import org.json.JSONObject;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -58,12 +62,18 @@ public class ItemListActivity extends AppCompatActivity {
     private Button buttonPayment;
     private List<Item> itemList = new ArrayList<>();
 
+    private ListSection<Item> listSection;
+
     private CurrencyConverterService currencyConverterService;
     private String base;
     private String to;
     private String json = "";
     private JSONObject conversionResult = null;
     private SharedPreferences preferences;
+
+
+
+    private static final boolean USE_TEST_DATA = false; //TODO da li da koristi test podatke ili rest
 
     public static ItemListActivity itemListActivity;
 
@@ -75,7 +85,7 @@ public class ItemListActivity extends AppCompatActivity {
         if (buttonCart != null)
             buttonCart.setText("Cart(" + items.size() + ")");
         if (buttonPayment != null)
-            buttonPayment.setText("Pay(" + total + ")");
+            buttonPayment.setText(String.format("Pay(%.2f)", total));
 
         Log.d("random_tag", "Called " + items.size());
     });
@@ -107,6 +117,32 @@ public class ItemListActivity extends AppCompatActivity {
         Toast.makeText(this, "Items " + recyclerView.getAdapter().getItemCount(), Toast.LENGTH_LONG).show();
         convert(to, preferences);
         itemListActivity = this;
+
+        ItemsService itemsService= new ItemServiceImpl().getItemService();
+        itemsService.getItems().enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+
+                Log.d("random_tag", "Code:"+response.code());
+                List<Item> items = response.body();
+                Log.d("random_tag", "Items " + Arrays.toString( items.toArray()));
+                if(!USE_TEST_DATA){
+                    itemList.clear();
+                    itemList.addAll(items);
+                    if (recyclerView != null && recyclerView.getAdapter() != null){
+                        Log.d("random_tag", "into recycleview " + listSection.size());
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.d("random_tag", "Error:"  + t.toString());
+                //TODO error message
+            }
+        });
+
     }
 
     @Override
@@ -149,7 +185,7 @@ public class ItemListActivity extends AppCompatActivity {
                 new ProcessorBinder(),
                 new GpuBinder(),
                 new StorageBinder());
-        ListSection<Item> listSection = new ListSection<>();
+        listSection = new ListSection<>();
         listSection.addAll(itemList);
         adapter.addSection(listSection);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -273,6 +309,7 @@ public class ItemListActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     // Connection error handling
+                   // Toast.makeText(ItemListActivity.this, "Error occurred while updating currency", Toast.LENGTH_SHORT).show();
                 }
             });
         }

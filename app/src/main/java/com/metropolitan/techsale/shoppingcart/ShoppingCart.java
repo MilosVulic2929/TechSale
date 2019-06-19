@@ -60,8 +60,7 @@ public class ShoppingCart {
             String json = preferences.getString(PreferenceKeys.SHOPPING_CART, "");
             if (json == null || json.isEmpty())
                 return items;
-            Type collectionType = new TypeToken<List<Item>>() {
-            }.getType();
+            Type collectionType = new TypeToken<List<Item>>() {}.getType();
             List<Item> list = new Gson().fromJson(json, collectionType);
             items.addAll(list);
             Toast.makeText(context, "Items " + items.size(), Toast.LENGTH_SHORT).show();

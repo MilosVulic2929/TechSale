@@ -77,7 +77,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         for (Item i : items) {
             total += i.getPrice();
         }
-        textTotal.setText(String.format("Total Price: %s", total));
+        textTotal.setText(String.format("Total Price: %.2f", total));
 
     }
 

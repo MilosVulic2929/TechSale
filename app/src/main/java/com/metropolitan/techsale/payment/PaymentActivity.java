@@ -19,7 +19,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private TextView textView;
     private SharedPreferences preferences;
-    private TextView textViewTotalPrice;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +29,16 @@ public class PaymentActivity extends AppCompatActivity {
         Utils.setStyleTheme(preferences, this);
         setContentView(R.layout.activity_payment);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        textView = findViewById(R.id.textViewRegistrationWizard);
+        textView = findViewById(R.id.textViewTotalPrice);
         setTotalPrice(this.getIntent().getDoubleExtra("Total", 0.0), preferences);
-
+        /**
         //TODO info - dodat total price
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
         double total = 0;
         for (Item i : ShoppingCart.getInstance(this).getItems())
             total += i.getPrice();
 
-        textViewTotalPrice.setText(String.format("Total Price: %s", total));
+        textViewTotalPrice.setText(String.format("Total Price: %s", total));*/
     }
 
     @Override
@@ -50,16 +50,16 @@ public class PaymentActivity extends AppCompatActivity {
     private void setTotalPrice(double price, SharedPreferences preferences) {
         if (Objects.equals(preferences.getString("currencyKey", "euro"), "dollar")) {
             Log.d("tagic", "probala " + price);
-            textView.setText("Total price " + price + " $");
+            textView.setText(String.format("Total price: %.2f $", price));
         } else if (Objects.equals(preferences.getString("currencyKey", "euro"), "pound")) {
             Log.d("tagic", "probala " + price);
-            textView.setText("Total price " + price + " £");
+            textView.setText(String.format("Total price: %.2f £", price));
         } else if (Objects.equals(preferences.getString("currencyKey", "euro"), "ruble")) {
             Log.d("tagic", "probala " + price);
-            textView.setText("Total price " + price + " \u20BD");
+            textView.setText(String.format("Total price: %.2f \u20BD", price));
         } else {
             Log.d("tagic", "probala " + price);
-            textView.setText("Total price " + price + " €");
+            textView.setText(String.format("Total price: %.2f €", price));
         }
     }
 }

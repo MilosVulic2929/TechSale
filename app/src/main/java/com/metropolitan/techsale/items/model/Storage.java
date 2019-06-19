@@ -40,6 +40,15 @@ public class Storage extends Item {
         this.speed = speed;
     }
 
+    @Override
+    public String toString() {
+        return "Storage{" +
+                "capacity=" + capacity +
+                ", diskType=" + diskType +
+                ", speed='" + speed + '\'' +
+                '}';
+    }
+
     public enum DiskType {
         SSD, HDD
     }
