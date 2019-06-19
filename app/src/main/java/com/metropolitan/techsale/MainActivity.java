@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.View;
 import com.metropolitan.techsale.auth.RegistrationActivity;
 import com.metropolitan.techsale.items.ItemListActivity;
 import com.metropolitan.techsale.settings.SettingsActivity;
+import com.metropolitan.techsale.shoppingcart.ShoppingCart;
 import com.metropolitan.techsale.utils.ExtraKeys;
 import com.metropolitan.techsale.utils.Utils;
 
@@ -19,13 +21,24 @@ public class MainActivity extends AppCompatActivity {
 
     public static MainActivity mainActivity;
 
+    public static String oldValue =  "euro";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Utils.setStyleTheme(preferences, this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        oldValue = Utils.getPreferenceCurrency(this);
+        Log.d("tagic", "Old value: " + oldValue);
         mainActivity = this;
+        // TODO check if user is in preferences and go to ItemListActivity
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ShoppingCart.getInstance(this).save();
     }
 
     @Override

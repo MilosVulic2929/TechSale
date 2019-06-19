@@ -40,7 +40,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         itemSection.clear();
         itemSection.addAll(items);
         if (textTotal != null)
-            textTotal.setText("Total Price: " + total + "");
+            textTotal.setText(String.format("Total Price: %.2f", total));
 
         if (recyclerView != null && recyclerView.getAdapter() != null)
             recyclerView.getAdapter().notifyDataSetChanged();
@@ -84,7 +84,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("random_tag", "On Restart");
         cartListener.accept(ShoppingCart.getInstance(this).getItems());
         ShoppingCart.getInstance(this).addListener(cartListener);
     }
@@ -111,9 +110,4 @@ public class ShoppingCartActivity extends AppCompatActivity {
         return true;
     }
 
-    public void pay(View view){
-        Intent intent = new Intent(this, PaymentActivity.class);
-        intent.putExtra("Total", Double.valueOf(textTotal.getText().toString().substring(7)));
-        startActivity(intent);
-    }
 }

@@ -24,6 +24,15 @@ public class Item {
 
     public Item() { }
 
+    public Item(Item item){
+        this.id = item.id;
+        this.name = item.name;
+        this.make = item.make;
+        this.price = item.price;
+        this.quantity = item.quantity;
+        this.imageUrl = item.imageUrl;
+    }
+
     public Item(int id, String name, String make, double price, int quantity, String imageUrl) {
         this.id = id;
         this.name = name;

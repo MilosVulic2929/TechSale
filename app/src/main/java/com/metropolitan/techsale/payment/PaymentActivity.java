@@ -30,15 +30,12 @@ public class PaymentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_payment);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         textView = findViewById(R.id.textViewTotalPrice);
-        setTotalPrice(this.getIntent().getDoubleExtra("Total", 0.0), preferences);
-        /**
-        //TODO info - dodat total price
-        textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
+
         double total = 0;
         for (Item i : ShoppingCart.getInstance(this).getItems())
             total += i.getPrice();
+        setTotalPrice(total, preferences);
 
-        textViewTotalPrice.setText(String.format("Total Price: %s", total));*/
     }
 
     @Override

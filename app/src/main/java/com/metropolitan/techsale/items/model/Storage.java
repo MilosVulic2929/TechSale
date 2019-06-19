@@ -46,7 +46,7 @@ public class Storage extends Item {
                 "capacity=" + capacity +
                 ", diskType=" + diskType +
                 ", speed='" + speed + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
     public enum DiskType {

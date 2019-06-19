@@ -34,7 +34,7 @@ public class ShoppingCart {
     private Context context;
 
     public void add(Item item) {
-        items.add(item);
+        items.add(new Item(item));
         save();
         if (listener != null)
             listener.accept(items);
@@ -69,7 +69,7 @@ public class ShoppingCart {
         return items;
     }
 
-    private void save() {
+    public void save() {
         String json = items.isEmpty() ? "" : new Gson().toJson(items);
         SharedPreferences preferences = context.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
         preferences.edit().putString(PreferenceKeys.SHOPPING_CART, json).apply();

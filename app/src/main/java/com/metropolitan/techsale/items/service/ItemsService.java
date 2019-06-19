@@ -10,7 +10,6 @@ import retrofit2.http.GET;
 
 public interface ItemsService {
 
-
     @GET("item/")
     Call<List<Item>> getItems();
 
