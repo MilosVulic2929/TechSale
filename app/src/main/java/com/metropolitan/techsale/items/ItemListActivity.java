@@ -2,8 +2,10 @@ package com.metropolitan.techsale.items;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +35,7 @@ import com.metropolitan.techsale.utils.ExtraKeys;
 import com.metropolitan.techsale.utils.Utils;
 
 import org.json.JSONObject;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +84,8 @@ public class ItemListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Utils.setStyleTheme(preferences, this);
         setContentView(R.layout.activity_item_list);
         asGuest = getIntent().getBooleanExtra(ExtraKeys.EXTRA_KEY_GUEST, false);
         buttonCart = findViewById(R.id.buttonCart);
@@ -111,18 +116,25 @@ public class ItemListActivity extends AppCompatActivity {
         ShoppingCart.getInstance(this).addListener(cartListener);
     }
 
-    public void onClickGoToCart(View view) {
-        Intent intent = new Intent(this, ShoppingCartActivity.class);
-        startActivity(intent);
-    }
 
     public void onClickGoToPayment(View view) {
-        Intent intent = new Intent(this, PaymentActivity.class);
-        String vrednost = buttonPayment.getText().toString().substring(buttonPayment.getText().toString().indexOf("(") + 1, buttonPayment.getText().toString().lastIndexOf(")"));
-        intent.putExtra("Total", Double.valueOf(vrednost));
-        startActivity(intent);
+       if(ShoppingCart.getInstance(this).getItems().size() > 0){
+             Intent intent = new Intent(this, PaymentActivity.class);
+             String vrednost = buttonPayment.getText().toString().substring(buttonPayment.getText().toString().indexOf("(") + 1, buttonPayment.getText().toString().lastIndexOf(")"));
+             intent.putExtra("Total", Double.valueOf(vrednost));
+             startActivity(intent);
+        } else {
+            Toast.makeText(this, "Shopping Cart is empty", Toast.LENGTH_SHORT).show();
+        }
     }
-
+    public void onClickGoToCart(View view){
+        if(ShoppingCart.getInstance(this).getItems().size() > 0){
+            Intent intent = new Intent(this, ShoppingCartActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Shopping Cart is empty", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public void onClickEmptyCart(View view) {
         ShoppingCart.getInstance(this).removeAll();

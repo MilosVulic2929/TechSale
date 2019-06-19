@@ -13,6 +13,7 @@ public class Utils {
     public static String json = "";
 
     public static void setStyleTheme(SharedPreferences preferences, Context context) {
+
         if (preferences.getBoolean("themeKey", false)) {
             context.setTheme(R.style.DarkTheme);
         } else {
