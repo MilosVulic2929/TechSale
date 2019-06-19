@@ -1,17 +1,18 @@
 package com.metropolitan.techsale.shoppingcart;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.metropolitan.techsale.R;
 import com.metropolitan.techsale.items.model.Item;
+import com.metropolitan.techsale.payment.PaymentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,6 @@ import mva2.adapter.MultiViewAdapter;
 public class ShoppingCartActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private Button buttonPay;
     private TextView textTotal;
     private List<Item> itemList = new ArrayList<>();
     private ListSection<Item> itemSection;
@@ -36,7 +36,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         itemSection.clear();
         itemSection.addAll(items);
         if (textTotal != null)
-            textTotal.setText("Total: " + total + ")");
+            textTotal.setText("Total: " + total + "");
         if (recyclerView != null && recyclerView.getAdapter() != null)
             recyclerView.getAdapter().notifyDataSetChanged();
     });
@@ -48,7 +48,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.recyclerViewShoppingCart);
-        buttonPay = findViewById(R.id.buttonPay);
         textTotal = findViewById(R.id.textViewTotal);
         MultiViewAdapter adapter = new MultiViewAdapter();
         adapter.registerItemBinders(new CartItemBinder());
@@ -94,5 +93,11 @@ public class ShoppingCartActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    public void pay(View view){
+        Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra("Total", Double.valueOf(textTotal.getText().toString().substring(7)));
+        startActivity(intent);
     }
 }
