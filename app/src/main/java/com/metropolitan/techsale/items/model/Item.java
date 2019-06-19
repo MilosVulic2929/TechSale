@@ -1,7 +1,18 @@
 package com.metropolitan.techsale.items.model;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.Objects;
 
+// TODO info mora se doda da bi decodovalo json request na tacnu klasu
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Gpu.class, name = "gpu"),
+        @JsonSubTypes.Type(value = Processor.class, name = "cpu"),
+        @JsonSubTypes.Type(value = RamMemory.class, name = "ram"),
+        @JsonSubTypes.Type(value = Storage.class, name = "storage")
+})
 public class Item {
 
     private int id;
@@ -12,6 +23,15 @@ public class Item {
     private String imageUrl;
 
     public Item() { }
+
+    public Item(Item item){
+        this.id = item.id;
+        this.name = item.name;
+        this.make = item.make;
+        this.price = item.price;
+        this.quantity = item.quantity;
+        this.imageUrl = item.imageUrl;
+    }
 
     public Item(int id, String name, String make, double price, int quantity, String imageUrl) {
         this.id = id;
@@ -62,6 +82,14 @@ public class Item {
         this.quantity = quantity;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,11 +103,15 @@ public class Item {
         return Objects.hash(id);
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", make='" + make + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
     }
 }

@@ -51,7 +51,7 @@ public class RamMemoryBinder extends ItemBinder<RamMemory, RamMemoryBinder.RamVi
                 .into(holder.imageView);
         holder.textViewItemName.setText(String.format("Name: %s", item.getName()));
         holder.textViewItemMake.setText(String.format("Make: %s", item.getMake()));
-        holder.textViewItemPrice.setText(String.format("Price: " + Utils.setCurrencyTag(preferences) + "%s", item.getPrice()));
+        holder.textViewItemPrice.setText(String.format("Price: " + Utils.setCurrencyTag(preferences) + "%.2f", item.getPrice()));
         holder.textViewItemType.setText("Type: RAM");
         holder.textViewRamMemory.setText(String.format("Memory: %dGB", item.getMemory()));
         holder.textViewRamFrequency.setText(String.format("Frequency: %dMHz", item.getFrequency()));

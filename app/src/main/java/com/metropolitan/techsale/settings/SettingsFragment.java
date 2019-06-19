@@ -20,7 +20,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private SwitchPreferenceCompat switchThemePref;
     private ListPreference currenciesList;
     private SharedPreferences preferences;
-    public static String oldValue = "euro";
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -37,7 +36,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         currenciesList.setOnPreferenceChangeListener((preference, o) -> {
-            oldValue = currenciesList.getValue();
+            MainActivity.oldValue = currenciesList.getValue();
             return true;
         });
     }

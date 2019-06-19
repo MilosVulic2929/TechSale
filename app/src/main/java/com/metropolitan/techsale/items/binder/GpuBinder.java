@@ -44,12 +44,12 @@ public class GpuBinder extends ItemBinder<Gpu, GpuBinder.GpuViewHolder> {
                 .into(holder.imageView);
         holder.textViewItemName.setText(String.format("Name: %s", item.getName()));
         holder.textViewItemMake.setText(String.format("Make: %s", item.getMake()));
-        holder.textViewItemPrice.setText(String.format("Price: " + Utils.setCurrencyTag(preferences) + "%s", item.getPrice()));
+        holder.textViewItemPrice.setText(String.format("Price: " + Utils.setCurrencyTag(preferences) + "%.2f", item.getPrice()));
         holder.textViewItemType.setText("Type: GPU");
         holder.textViewGpuMemory.setText(String.format("Memory: %dGB", item.getMemory()));
         holder.textViewGpuCores.setText(String.format("Cores: %d", item.getCores()));
         holder.textViewGpuMemorySpeed.setText(String.format("Speed: %dGbps", item.getMemorySpeed()));
-        holder.textViewGpuBoostClock.setText(String.format("Boost Clock: %dMHz", item.getBoostClock()));
+        holder.textViewGpuBoostClock.setText(String.format("Boost: %dMHz", item.getBoostClock()));
     }
 
     @Override
