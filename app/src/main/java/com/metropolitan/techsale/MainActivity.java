@@ -42,17 +42,17 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClickRegister(View view){
+    public void onClickRegister(View view) {
         //TODO start register activity
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
     }
 
-    public void onClickLogin(View view){
+    public void onClickLogin(View view) {
         //TODO start register activity
     }
 
-    public void onClickAsGuest(View view){
+    public void onClickAsGuest(View view) {
         Intent intent = new Intent(this, ItemListActivity.class).putExtra(ExtraKeys.EXTRA_KEY_GUEST, true);
         startActivity(intent);
     }

@@ -12,6 +12,8 @@ import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    public static SettingsActivity settingsActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -19,6 +21,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         showSettings();
+        settingsActivity = this;
     }
 
     @Override

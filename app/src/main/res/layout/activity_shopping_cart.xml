@@ -28,13 +28,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/buttonPay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/pay"
-            android:onClick="onClickPayment"/>
+            android:onClick="onClickPayment"
+            android:text="@string/pay" />
         <Button
             android:id="@+id/buttonEmpty"
             android:layout_width="match_parent"

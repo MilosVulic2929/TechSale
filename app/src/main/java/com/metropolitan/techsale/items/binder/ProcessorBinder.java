@@ -1,5 +1,7 @@
 package com.metropolitan.techsale.items.binder;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.CircularProgressDrawable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +12,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.metropolitan.techsale.R;
+import com.metropolitan.techsale.items.ItemListActivity;
 import com.metropolitan.techsale.items.model.Item;
 import com.metropolitan.techsale.items.model.Processor;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
+import com.metropolitan.techsale.utils.Utils;
 
 import mva2.adapter.ItemBinder;
 import mva2.adapter.ItemViewHolder;
@@ -35,6 +39,7 @@ public class ProcessorBinder  extends ItemBinder<Processor, ProcessorBinder.Proc
     @SuppressWarnings("all")
     @Override
     public void bindViewHolder(ProcessorBinder.ProcessorViewHolder holder, Processor item) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ItemListActivity.itemListActivity);
         CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(holder.itemView.getContext());
         circularProgressDrawable.setStrokeWidth(5);
         circularProgressDrawable.setCenterRadius(32);
@@ -46,7 +51,7 @@ public class ProcessorBinder  extends ItemBinder<Processor, ProcessorBinder.Proc
                 .into(holder.imageView);
         holder.textViewItemName.setText(String.format("Name: %s", item.getName()));
         holder.textViewItemMake.setText(String.format("Make: %s", item.getMake()));
-        holder.textViewItemPrice.setText(String.format("Price: $%s", item.getPrice()));
+        holder.textViewItemPrice.setText(String.format("Price: " + Utils.setCurrencyTag(preferences) + "%s", item.getPrice()));
         holder.textViewItemType.setText("Type: CPU");
         holder.textViewProcessorCores.setText(String.format("Cores: %d", item.getCores()));
         holder.textViewProcessorSpeed.setText(String.format("Speed: %s", item.getSpeed()));
