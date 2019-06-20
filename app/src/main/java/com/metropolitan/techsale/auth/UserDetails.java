@@ -3,7 +3,6 @@ package com.metropolitan.techsale.auth;
 public class UserDetails {
 
     private String username;
-
     private String password;
 
     public UserDetails() {

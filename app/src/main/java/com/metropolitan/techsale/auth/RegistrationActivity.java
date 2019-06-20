@@ -2,21 +2,25 @@ package com.metropolitan.techsale.auth;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.metropolitan.techsale.R;
-import com.metropolitan.techsale.settings.SettingsFragment;
 
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText email;
     private EditText password;
+    private EditText username;
     private EditText repeatPassword;
     private EditText firstName;
     private EditText lastName;
@@ -33,6 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
         email = findViewById(R.id.editTextEmail);
         firstName = findViewById(R.id.editTextFirstName);
         lastName = findViewById(R.id.editTextLastName);
+        username = findViewById(R.id.editTextUsername);
     }
 
     @Override
@@ -64,6 +69,22 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void register() {
-        // TODO
+        User user = new User("0", email.getText().toString(), username.getText().toString(), password.getText().toString(), firstName.getText().toString(), lastName.getText().toString());
+        AuthService authService = new AuthServiceImpl().getAuthService();
+        authService.register(user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Log.d("random_tag", "Code:" + response.code());
+                if (response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "User je registrovan", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d("random_tag", "Error:" + t.toString());
+                t.printStackTrace();
+            }
+        });
     }
 }
