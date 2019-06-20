@@ -7,7 +7,7 @@ public class AuthServiceImpl extends AbstractRetrofitService {
     private AuthService authService;
 
     protected AuthServiceImpl() {
-        super("http://10.0.2.2:8090/");
+        super("http://10.0.3.2:8090/"); // TODO info change to 10.0.2.2 default emulator / 10.0.3.2 geny
         this.authService = retrofit.create(AuthService.class);
     }
 

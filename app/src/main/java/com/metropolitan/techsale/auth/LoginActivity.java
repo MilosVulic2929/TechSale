@@ -20,6 +20,7 @@ import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.utils.PreferenceKeys;
 import com.metropolitan.techsale.utils.Utils;
 
+
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameEditText;
     private EditText passwordEditText;
+    public static LoginActivity loginActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +39,13 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Utils.setStyleTheme(preferences, this);
         setContentView(R.layout.activity_login);
-        Utils.setStyleTheme(preferences, this);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         usernameEditText = findViewById(R.id.editTextUsernameLogin);
         passwordEditText = findViewById(R.id.editTextPasswordLogin);
-
+        loginActivity = this;
     }
 
     public void onClickLogin(View view) {
-        //TODO on login go to ListItemActivity
-        // Save user (token) to preferences
         if (validateInput()) {
             UserDetails userDetails = new UserDetails(usernameEditText.getText().toString(), passwordEditText.getText().toString());
             AuthService authService = new AuthServiceImpl().getAuthService();
@@ -54,8 +54,6 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                     Log.d("random_tag", "Code:" + response.code());
                     if (response.isSuccessful()) {
-                        Log.d("random_tag", "tokence je " + response.body().getToken());
-                        Log.d("random_tag", "username je " + response.body().getUsername());
                         Toast.makeText(getApplicationContext(), "User je uspesno ulogovan", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), ItemListActivity.class);
                         startActivity(intent);
@@ -65,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString(PreferenceKeys.AUTH_TOKEN, response.body().getToken());
                         editor.putString(PreferenceKeys.AUTH_USERNAME, response.body().getUsername());
                         editor.apply();
+                        invalidateOptionsMenu();
                     } else {
                         Toast.makeText(getApplicationContext(), "User nije uspesno ulogovan", Toast.LENGTH_SHORT).show();
                     }
@@ -82,6 +81,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickRegister(View view) {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        startActivity(intent);
+    }
+
     private boolean validateInput() {
         return !usernameEditText.getText().toString().isEmpty() && !passwordEditText.getText().toString().isEmpty();
     }
@@ -95,14 +99,18 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        if(!Utils.checkHidingLogoutItem(this)){
+            menu.findItem(R.id.action_logout).setVisible(false);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         if (item.getItemId() == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
-        } else if(item.getItemId() == R.id.action_logout){
+        } else if (item.getItemId() == R.id.action_logout) {
             SharedPreferences sharedPref = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
             sharedPref.edit()
                     .putString(PreferenceKeys.AUTH_TOKEN, "")

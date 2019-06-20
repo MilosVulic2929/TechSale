@@ -35,7 +35,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText repeatPassword;
     private EditText firstName;
     private EditText lastName;
-
+    public static RegistrationActivity registrationActivity;
 
     private Pattern emailRegex = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -46,6 +46,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Utils.setStyleTheme(preferences, this);
         setContentView(R.layout.activity_registration);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        registrationActivity = this;
 
         password = findViewById(R.id.editTextPassword);
         repeatPassword = findViewById(R.id.editTextPaswordConfirmation);
@@ -110,6 +111,9 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        if(!Utils.checkHidingLogoutItem(this)){
+            menu.findItem(R.id.action_logout).setVisible(false);
+        }
         return true;
     }
 

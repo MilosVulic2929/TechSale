@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.metropolitan.techsale.MainActivity;
 import com.metropolitan.techsale.R;
+import com.metropolitan.techsale.auth.LoginActivity;
 import com.metropolitan.techsale.items.model.Item;
 import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
@@ -36,6 +37,7 @@ public class OrderActivity extends AppCompatActivity {
     private TextView textViewFirstName;
     private TextView textViewLastName;
     private TextView textViewTotalPrice;
+    public static OrderActivity orderActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,9 @@ public class OrderActivity extends AppCompatActivity {
         Utils.setStyleTheme(preferences, this);
         setContentView(R.layout.activity_order);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        orderActivity = this;
+        invalidateOptionsMenu();
+
         textViewAddress = findViewById(R.id.editTextAddress);
         textViewPhone = findViewById(R.id.editTextPhone);
         textViewFirstName = findViewById(R.id.editTextFirstName);
@@ -111,6 +116,10 @@ public class OrderActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        // TODO info za ficu - ovo metni na taj activity orderlist kad ga pravis i gore u onCreate jos jedan poziv imas - ovo pozovi invalidateOptionsMenu() u on create tamo
+        if(!Utils.checkHidingLogoutItem(this)){
+            menu.findItem(R.id.action_logout).setVisible(false);
+        }
         return true;
     }
 
