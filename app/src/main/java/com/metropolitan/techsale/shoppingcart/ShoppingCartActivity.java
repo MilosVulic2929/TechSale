@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import com.metropolitan.techsale.R;
 import com.metropolitan.techsale.items.model.Item;
 import com.metropolitan.techsale.payment.PaymentActivity;
 
+import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.utils.Utils;
 
 import java.util.ArrayList;
@@ -96,12 +99,27 @@ public class ShoppingCartActivity extends AppCompatActivity {
     }
 
     public void onClickPayment(View view){
+        //TODO go to OrderActivity
         if(ShoppingCart.getInstance(this).getItems().size() > 0){
             Intent intent = new Intent(this, PaymentActivity.class);
             startActivity(intent);
         } else {
             Toast.makeText(this, "Shopping Cart is empty", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

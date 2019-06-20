@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ import com.metropolitan.techsale.items.model.Storage;
 import com.metropolitan.techsale.items.service.ItemServiceImpl;
 import com.metropolitan.techsale.items.service.ItemsService;
 import com.metropolitan.techsale.payment.PaymentActivity;
+import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.settings.SettingsFragment;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
 import com.metropolitan.techsale.shoppingcart.ShoppingCartActivity;
@@ -161,6 +164,8 @@ public class ItemListActivity extends AppCompatActivity {
     }
 
     public void onClickGoToPayment(View view) {
+
+        //TODO go to OrderActivity
        if(ShoppingCart.getInstance(this).getItems().size() > 0){
              Intent intent = new Intent(this, PaymentActivity.class);
              String vrednost = buttonPayment.getText().toString().substring(buttonPayment.getText().toString().indexOf("(") + 1, buttonPayment.getText().toString().lastIndexOf(")"));
@@ -309,6 +314,20 @@ public class ItemListActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

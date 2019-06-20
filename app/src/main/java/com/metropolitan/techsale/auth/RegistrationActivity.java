@@ -1,12 +1,16 @@
 package com.metropolitan.techsale.auth;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.metropolitan.techsale.R;
+import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.settings.SettingsFragment;
 
 import java.util.Objects;
@@ -28,6 +32,7 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         password = findViewById(R.id.editTextPassword);
         repeatPassword = findViewById(R.id.editTextPaswordConfirmation);
         email = findViewById(R.id.editTextEmail);
@@ -65,5 +70,19 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void register() {
         // TODO
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
