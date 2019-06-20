@@ -18,6 +18,9 @@ public class Order {
 
     private String lastName;
 
+    private String username;
+
+
     public Order() { }
 
     public Order(Integer id, List<Item> items, String phone, String address, String firstName, String lastName) {
@@ -83,5 +86,13 @@ public class Order {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

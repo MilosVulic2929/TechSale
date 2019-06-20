@@ -12,6 +12,7 @@ public class Processor extends Item{
 
     public Processor(int id, String name, String make, double price, int quantity, int cores, double speed, String socket, String imageUrl) {
         super(id, name, make, price, quantity, imageUrl);
+        setType("cpu");
         this.cores = cores;
         this.speed = speed;
         this.socket = socket;
@@ -39,5 +40,14 @@ public class Processor extends Item{
 
     public void setSocket(String socket) {
         this.socket = socket;
+    }
+
+    @Override
+    public String toString() {
+        return "Processor{" +
+                "cores=" + cores +
+                ", speed=" + speed +
+                ", socket='" + socket + '\'' +
+                "} " + super.toString();
     }
 }

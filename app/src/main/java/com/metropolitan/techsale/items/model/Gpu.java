@@ -4,7 +4,6 @@ public class Gpu extends Item {
 
     private int memory;
     private int cores;
-    private int coreClock;
     private int memorySpeed;
     private int boostClock;
 
@@ -13,6 +12,7 @@ public class Gpu extends Item {
 
     public Gpu(int id, String name, String make, double price, int quantity, int memory, int cores, int memorySpeed, int boostClock, String imageUrl) {
         super(id, name, make, price, quantity, imageUrl);
+        setType("gpu");
         this.memory = memory;
         this.cores = cores;
         this.memorySpeed = memorySpeed;
@@ -49,5 +49,15 @@ public class Gpu extends Item {
 
     public void setBoostClock(int boostClock) {
         this.boostClock = boostClock;
+    }
+
+    @Override
+    public String toString() {
+        return "Gpu{" +
+                "memory=" + memory +
+                ", cores=" + cores +
+                ", memorySpeed=" + memorySpeed +
+                ", boostClock=" + boostClock +
+                "} " + super.toString();
     }
 }

@@ -14,8 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/LightTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".order.OrderActivity"></activity>
-        <activity android:name=".payment.PaymentActivity" />
+        <activity android:name=".orderlist.OrderListActivity"></activity>
+        <activity android:name=".order.OrderActivity" />
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".shoppingcart.ShoppingCartActivity" />
         <activity android:name=".items.ItemListActivity" />

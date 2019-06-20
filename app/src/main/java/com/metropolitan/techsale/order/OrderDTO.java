@@ -6,6 +6,8 @@ public class OrderDTO {
 
     private List<Integer> items;
 
+    private String username;
+
     private String phone;
 
     private String address;
@@ -17,8 +19,9 @@ public class OrderDTO {
     public OrderDTO() { }
 
 
-    public OrderDTO(List<Integer> items, String phone, String address, String firstName, String lastName) {
+    public OrderDTO(List<Integer> items, String username, String phone, String address, String firstName, String lastName) {
         this.items = items;
+        this.username = username;
         this.phone = phone;
         this.address = address;
         this.firstName = firstName;
@@ -31,6 +34,14 @@ public class OrderDTO {
 
     public void setItems(List<Integer> items) {
         this.items = items;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPhone() {

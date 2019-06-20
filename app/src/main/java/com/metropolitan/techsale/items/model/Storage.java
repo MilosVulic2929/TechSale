@@ -11,6 +11,7 @@ public class Storage extends Item {
 
     public Storage(int id, String name, String make, double price, int quantity, int capacity, DiskType diskType, String speed, String imageUrl) {
         super(id, name, make, price, quantity, imageUrl);
+        setType("storage");
         this.capacity = capacity;
         this.diskType = diskType;
         this.speed = speed;

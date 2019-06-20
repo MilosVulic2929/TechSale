@@ -45,5 +45,8 @@
     <string name="empty_cart">Empty Cart</string>
     <string name="total_price">Total: 0.00</string>
     <string name="pay">Pay</string>
+    <string name="logout">Logout</string>
+    <string name="address" />
+    <string name="phone_number">Phone Number</string>
 
 </resources>

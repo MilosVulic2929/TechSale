@@ -1,11 +1,10 @@
 package com.metropolitan.techsale.items;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,18 +31,16 @@ import com.metropolitan.techsale.items.model.RamMemory;
 import com.metropolitan.techsale.items.model.Storage;
 import com.metropolitan.techsale.items.service.ItemServiceImpl;
 import com.metropolitan.techsale.items.service.ItemsService;
-import com.metropolitan.techsale.payment.PaymentActivity;
+import com.metropolitan.techsale.order.OrderActivity;
 import com.metropolitan.techsale.settings.SettingsActivity;
-import com.metropolitan.techsale.settings.SettingsFragment;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
 import com.metropolitan.techsale.shoppingcart.ShoppingCartActivity;
-import com.metropolitan.techsale.utils.ExtraKeys;
+import com.metropolitan.techsale.utils.PreferenceKeys;
 import com.metropolitan.techsale.utils.Utils;
 
 import org.json.JSONObject;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,7 +60,6 @@ import static com.metropolitan.techsale.utils.Utils.isConnected;
 @SuppressWarnings("all")
 public class ItemListActivity extends AppCompatActivity {
 
-    private boolean asGuest;
     private RecyclerView recyclerView;
     private Button buttonCart;
     private Button buttonPayment;
@@ -77,8 +73,6 @@ public class ItemListActivity extends AppCompatActivity {
     private String json = "";
     private JSONObject conversionResult = null;
     private SharedPreferences preferences;
-
-
 
     private static final boolean USE_TEST_DATA = false; //TODO da li da koristi test podatke ili rest
 
@@ -104,7 +98,6 @@ public class ItemListActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Utils.setStyleTheme(preferences, this);
         setContentView(R.layout.activity_item_list);
-        asGuest = getIntent().getBooleanExtra(ExtraKeys.EXTRA_KEY_GUEST, false);
         buttonCart = findViewById(R.id.buttonCart);
         buttonPayment = findViewById(R.id.buttonPayment);
         recyclerView = findViewById(R.id.recyclerViewItems);
@@ -114,7 +107,7 @@ public class ItemListActivity extends AppCompatActivity {
         if (json.length() < 1 && Utils.json.length() > 20) {
             json = Utils.json;
         }
-        loadTestData();
+        //loadTestData();
         setupRecyclerView();
 
         // converting prices with regular currency to preferences chosen currency
@@ -144,7 +137,7 @@ public class ItemListActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Item>> call, Throwable t) {
                 Log.d("random_tag", "Error:"  + t.toString());
-                //TODO error message
+                Toast.makeText(ItemListActivity.this, "Failed to load items, please try again", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -163,11 +156,11 @@ public class ItemListActivity extends AppCompatActivity {
         ShoppingCart.getInstance(this).save();
     }
 
-    public void onClickGoToPayment(View view) {
+    public void onClickGoToOrder(View view) {
 
         //TODO go to OrderActivity
        if(ShoppingCart.getInstance(this).getItems().size() > 0){
-             Intent intent = new Intent(this, PaymentActivity.class);
+             Intent intent = new Intent(this, OrderActivity.class);
              String vrednost = buttonPayment.getText().toString().substring(buttonPayment.getText().toString().indexOf("(") + 1, buttonPayment.getText().toString().lastIndexOf(")"));
              intent.putExtra("Total", Double.valueOf(vrednost));
              startActivity(intent);
@@ -326,9 +319,18 @@ public class ItemListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        } else if(item.getItemId() == R.id.action_logout){
+            SharedPreferences sharedPref = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
+            sharedPref.edit()
+                    .putString(PreferenceKeys.AUTH_TOKEN, "")
+                    .putString(PreferenceKeys.AUTH_USERNAME, "")
+                    .apply();
+            ShoppingCart.getInstance(this).removeAll();
+            startActivity(new Intent(this, MainActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onBackPressed() {
