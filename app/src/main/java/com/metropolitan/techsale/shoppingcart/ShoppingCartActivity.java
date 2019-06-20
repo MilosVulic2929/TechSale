@@ -1,5 +1,6 @@
 package com.metropolitan.techsale.shoppingcart;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -7,15 +8,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.metropolitan.techsale.MainActivity;
 import com.metropolitan.techsale.R;
 import com.metropolitan.techsale.items.model.Item;
-import com.metropolitan.techsale.payment.PaymentActivity;
+import com.metropolitan.techsale.order.OrderActivity;
 
+import com.metropolitan.techsale.settings.SettingsActivity;
+import com.metropolitan.techsale.utils.PreferenceKeys;
 import com.metropolitan.techsale.utils.Utils;
 
 import java.util.ArrayList;
@@ -95,9 +100,10 @@ public class ShoppingCartActivity extends AppCompatActivity {
         Toast.makeText(this, "Shopping Cart is cleared", Toast.LENGTH_SHORT).show();
     }
 
-    public void onClickPayment(View view){
+    public void onClickGoToOrder(View view){
+        //TODO go to OrderActivity
         if(ShoppingCart.getInstance(this).getItems().size() > 0){
-            Intent intent = new Intent(this, PaymentActivity.class);
+            Intent intent = new Intent(this, OrderActivity.class);
             startActivity(intent);
         } else {
             Toast.makeText(this, "Shopping Cart is empty", Toast.LENGTH_SHORT).show();
@@ -108,6 +114,35 @@ public class ShoppingCartActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        } else if(item.getItemId() == R.id.action_logout){
+            SharedPreferences sharedPref = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
+            sharedPref.edit()
+                    .putString(PreferenceKeys.AUTH_TOKEN, "")
+                    .putString(PreferenceKeys.AUTH_USERNAME, "")
+                    .apply();
+            ShoppingCart.getInstance(this).removeAll();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
 }

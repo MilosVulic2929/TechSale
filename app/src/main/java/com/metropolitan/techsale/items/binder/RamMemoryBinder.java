@@ -55,7 +55,7 @@ public class RamMemoryBinder extends ItemBinder<RamMemory, RamMemoryBinder.RamVi
         holder.textViewItemType.setText("Type: RAM");
         holder.textViewRamMemory.setText(String.format("Memory: %dGB", item.getMemory()));
         holder.textViewRamFrequency.setText(String.format("Frequency: %dMHz", item.getFrequency()));
-        holder.textViewRamType.setText(String.format("Type: %s", item.getType()));
+        holder.textViewRamType.setText(String.format("Type: %s", item.getRamType()));
     }
 
     static class RamViewHolder extends ItemViewHolder<RamMemory> {

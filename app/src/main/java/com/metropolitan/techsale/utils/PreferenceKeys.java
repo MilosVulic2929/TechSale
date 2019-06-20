@@ -6,6 +6,7 @@ public class PreferenceKeys {
 
     public static final String SHOPPING_CART = "shopping_cart";
 
-    public static final String AUTH_TOKEN = "tokence";
+    public static final String AUTH_TOKEN = "token";
+    public static final String AUTH_USERNAME = "username";
 
 }

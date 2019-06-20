@@ -16,7 +16,6 @@ import com.metropolitan.techsale.auth.RegistrationActivity;
 import com.metropolitan.techsale.items.ItemListActivity;
 import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
-import com.metropolitan.techsale.utils.ExtraKeys;
 import com.metropolitan.techsale.utils.PreferenceKeys;
 import com.metropolitan.techsale.utils.Utils;
 
@@ -30,15 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Utils.setStyleTheme(preferences, this);
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         oldValue = Utils.getPreferenceCurrency(this);
         Log.d("tagic", "Old value: " + oldValue);
         mainActivity = this;
         // TODO info za ficu, nemoj pozivas ovu metodicu ako oces da ti se prikazuje mainActivity jer kad se jednom ulogujes posle ce samo cepa na itemList jer sam gha save u preference,
         // TODO to znaci da ce mora ubacimo logOut negde;
+        // TODO info vulic - ubacio sam u options menu logout
         checkTokenExsistance();
     }
 
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        //TODO sakriti logout dugme ako nije loginovan (optional)
         return true;
     }
 
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        } else if(item.getItemId() == R.id.action_logout){
+            SharedPreferences sharedPref = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
+            sharedPref.edit().putString(PreferenceKeys.AUTH_TOKEN, "").apply();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -73,16 +77,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAsGuest(View view) {
-        Intent intent = new Intent(this, ItemListActivity.class).putExtra(ExtraKeys.EXTRA_KEY_GUEST, true);
+        Intent intent = new Intent(this, ItemListActivity.class);
         startActivity(intent);
     }
 
     private void checkTokenExsistance(){
         SharedPreferences sharedPref = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
-        String tokence = sharedPref.getString(PreferenceKeys.AUTH_TOKEN,"");
-        if(!Objects.requireNonNull(tokence).isEmpty()){
-            // TODO info za ficu , ne znam da li treba da se metne ovde ispod put ekstra
-            Intent intent = new Intent(this, ItemListActivity.class).putExtra(ExtraKeys.EXTRA_KEY_GUEST, true);
+        String token = sharedPref.getString(PreferenceKeys.AUTH_TOKEN,"");
+        if(!Objects.requireNonNull(token).isEmpty()){
+            // TODO info za ficu , ne znam da li treba da se metne ovde ispod put ekstra - ispravljeno ne treba to vise
+            Intent intent = new Intent(this, ItemListActivity.class);
             startActivity(intent);
         }
     }

@@ -6,16 +6,17 @@ public class RamMemory extends Item {
     private int frequency;
 
     // DDR3, DD4...
-    private String type;
+    private String ramType;
 
     public RamMemory() {
     }
 
-    public RamMemory(int id, String name, String make, double price, int quantity, int memory, int frequency, String type, String imageUrl) {
+    public RamMemory(int id, String name, String make, double price, int quantity, int memory, int frequency, String ramType, String imageUrl) {
         super(id, name, make, price, quantity, imageUrl);
+        setType("ram");
         this.memory = memory;
         this.frequency = frequency;
-        this.type = type;
+        this.ramType = ramType;
     }
 
     public int getMemory() {
@@ -34,11 +35,20 @@ public class RamMemory extends Item {
         this.frequency = frequency;
     }
 
-    public String getType() {
-        return type;
+    public String getRamType() {
+        return ramType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setRamType(String ramType) {
+        this.ramType = ramType;
+    }
+
+    @Override
+    public String toString() {
+        return "RamMemory{" +
+                "memory=" + memory +
+                ", frequency=" + frequency +
+                ", ramType='" + ramType + '\'' +
+                "} " + super.toString();
     }
 }
