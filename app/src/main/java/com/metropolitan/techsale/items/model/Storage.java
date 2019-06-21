@@ -42,6 +42,11 @@ public class Storage extends Item {
     }
 
     @Override
+    public String getType() {
+        return "storage";
+    }
+
+    @Override
     public String toString() {
         return "Storage{" +
                 "capacity=" + capacity +

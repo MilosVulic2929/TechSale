@@ -55,6 +55,9 @@ public class OrderActivity extends AppCompatActivity {
         textViewLastName = findViewById(R.id.editTextLastName);
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
 
+        String defaultAddress = preferences.getString("addressKey", "");
+        textViewAddress.setText(defaultAddress);
+
         double total = 0;
         for (Item i : ShoppingCart.getInstance(this).getItems())
             total += i.getPrice();

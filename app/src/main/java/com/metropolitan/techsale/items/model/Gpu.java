@@ -52,6 +52,11 @@ public class Gpu extends Item {
     }
 
     @Override
+    public String getType() {
+        return "gpu";
+    }
+
+    @Override
     public String toString() {
         return "Gpu{" +
                 "memory=" + memory +

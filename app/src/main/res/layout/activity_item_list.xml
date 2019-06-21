@@ -14,6 +14,16 @@
         android:layout_height="wrap_content"
         android:entries="@array/itemTypes"/>
 
+    <TextView
+        android:id="@+id/textViewFilterMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="0 items match your search"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:visibility="invisible"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewItems"
         android:layout_width="match_parent"

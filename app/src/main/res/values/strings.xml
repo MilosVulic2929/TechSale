@@ -16,9 +16,9 @@
     <string name="enable_notifications">Enable notifications</string>
     <string name="disable_notifications">Disable notifications</string>
 
-    <string name="category_credit_card_title">Credit card</string>
-    <string name="credit_card_title">Default credit card number</string>
-    <string name="summary_credit_card">Enter credit card number here</string>
+    <string name="category_address_title">Address</string>
+    <string name="address_card_title">Default Address</string>
+    <string name="summary_address">Enter Your Address For Orders</string>
 
     <string name="currency_euro">Euros</string>
     <string name="currency_dollar">Dollars</string>
