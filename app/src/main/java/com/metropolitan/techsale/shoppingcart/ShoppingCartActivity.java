@@ -19,6 +19,7 @@ import com.metropolitan.techsale.R;
 import com.metropolitan.techsale.items.model.Item;
 import com.metropolitan.techsale.order.OrderActivity;
 
+import com.metropolitan.techsale.orderlist.OrderListActivity;
 import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.utils.PreferenceKeys;
 import com.metropolitan.techsale.utils.Utils;
@@ -121,8 +122,9 @@ public class ShoppingCartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        if(!Utils.checkHidingLogoutItem(this)){
+        if (!Utils.checkHidingLogoutItem(this)) {
             menu.findItem(R.id.action_logout).setVisible(false);
+            menu.findItem(R.id.action_orders).setVisible(false);
         }
         return true;
     }
@@ -131,7 +133,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
-        } else if(item.getItemId() == R.id.action_logout){
+        } else if (item.getItemId() == R.id.action_logout) {
             SharedPreferences sharedPref = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
             sharedPref.edit()
                     .putString(PreferenceKeys.AUTH_TOKEN, "")
@@ -139,6 +141,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
                     .apply();
             ShoppingCart.getInstance(this).removeAll();
             startActivity(new Intent(this, MainActivity.class));
+        }   else if(item.getItemId() == R.id.action_orders){
+            startActivity(new Intent(this, OrderListActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

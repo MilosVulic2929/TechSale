@@ -82,9 +82,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             navigateUpTo(new Intent(this, OrderListActivity.class));
             return true;
-        }
-        else if (item.getItemId() == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
         } else if (item.getItemId() == R.id.action_logout) {
             SharedPreferences sharedPref = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
             sharedPref.edit()

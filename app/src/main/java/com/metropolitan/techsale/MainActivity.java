@@ -93,10 +93,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClickAsGuest(View view) {
-        Intent intent = new Intent(this, ItemListActivity.class);
-        startActivity(intent);
-    }
 
     private void checkTokenExsistance(){
         SharedPreferences sharedPref = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
