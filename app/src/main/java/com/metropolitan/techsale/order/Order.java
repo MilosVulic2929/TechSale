@@ -7,17 +7,11 @@ import java.util.List;
 public class Order {
 
     private Integer id;
-
     private List<Item> items;
-
     private String phone;
-
     private String address;
-
     private String firstName;
-
     private String lastName;
-
     private String username;
 
 

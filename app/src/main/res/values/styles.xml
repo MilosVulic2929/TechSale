@@ -1,5 +1,5 @@
 <resources>
-    <!-- TODO info - dodato je da bi se menjala tema na CardView -->
+    <!-- potrebno zbog menjanja tema na card view -->
     <declare-styleable name = "cardStyle">
         <attr name="cardStyle" format="reference" />
     </declare-styleable>
@@ -14,7 +14,7 @@
         <item name="cardStyle">@style/CardView.Light</item>
     </style>
 
-    <style name="DarkTheme" parent="ThemeOverlay.AppCompat.Dark">
+    <style name="DarkTheme" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimaryDarkTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkThemeStatusBar</item>
         <item name="colorAccent">@color/colorAccentDarkTheme</item>
@@ -22,6 +22,7 @@
         <item name="android:itemBackground">@color/colorItemMenuBack</item>
         <item name="android:itemTextAppearance">@style/menu_item_color</item>
         <item name="cardStyle">@style/CardView.Dark</item>
+        <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="menu_item_color">

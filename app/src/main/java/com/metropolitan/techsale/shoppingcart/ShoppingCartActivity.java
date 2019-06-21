@@ -37,6 +37,8 @@ public class ShoppingCartActivity extends AppCompatActivity {
     private TextView textTotal;
     private List<Item> itemList = new ArrayList<>();
     private ListSection<Item> itemSection;
+    public static ShoppingCartActivity shoppingCartActivity;
+
     private Consumer<List<Item>> cartListener = (items -> {
         double total = 0;
         for (Item i : items) {
@@ -58,6 +60,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
         Utils.setStyleTheme(preferences, this);
         setContentView(R.layout.activity_shopping_cart);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        shoppingCartActivity = this;
 
         recyclerView = findViewById(R.id.recyclerViewShoppingCart);
         textTotal = findViewById(R.id.textViewTotal);
@@ -83,7 +86,7 @@ public class ShoppingCartActivity extends AppCompatActivity {
             total += i.getPrice();
         }
         textTotal.setText(String.format("Total Price: %.2f", total));
-
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -101,7 +104,6 @@ public class ShoppingCartActivity extends AppCompatActivity {
     }
 
     public void onClickGoToOrder(View view){
-        //TODO go to OrderActivity
         if(ShoppingCart.getInstance(this).getItems().size() > 0){
             Intent intent = new Intent(this, OrderActivity.class);
             startActivity(intent);
@@ -119,6 +121,9 @@ public class ShoppingCartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        if(!Utils.checkHidingLogoutItem(this)){
+            menu.findItem(R.id.action_logout).setVisible(false);
+        }
         return true;
     }
 
