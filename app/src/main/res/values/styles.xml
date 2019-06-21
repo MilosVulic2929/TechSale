@@ -1,6 +1,6 @@
 <resources>
     <!-- potrebno zbog menjanja tema na card view -->
-    <declare-styleable name = "cardStyle">
+    <declare-styleable name="cardStyle">
         <attr name="cardStyle" format="reference" />
     </declare-styleable>
 
@@ -27,6 +27,11 @@
 
     <style name="menu_item_color">
         <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="LightTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

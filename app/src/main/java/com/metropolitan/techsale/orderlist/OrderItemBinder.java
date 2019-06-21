@@ -1,4 +1,4 @@
-package com.metropolitan.techsale.shoppingcart;
+package com.metropolitan.techsale.orderlist;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -18,20 +18,21 @@ import com.metropolitan.techsale.items.model.Item;
 import com.metropolitan.techsale.items.model.Processor;
 import com.metropolitan.techsale.items.model.RamMemory;
 import com.metropolitan.techsale.items.model.Storage;
+import com.metropolitan.techsale.shoppingcart.CartItemBinder;
+import com.metropolitan.techsale.shoppingcart.ShoppingCart;
 import com.metropolitan.techsale.utils.Utils;
 
 import mva2.adapter.ItemBinder;
 import mva2.adapter.ItemViewHolder;
 
-public class CartItemBinder extends ItemBinder<Item, CartItemBinder.CartItemViewHolder> {
-
+public class OrderItemBinder extends ItemBinder<Item, OrderItemBinder.OrderItemViewHolder> {
     @Override
-    public CartItemViewHolder createViewHolder(ViewGroup parent) {
-        return new CartItemViewHolder(inflate(parent, R.layout.list_cart_item));
+    public OrderItemViewHolder createViewHolder(ViewGroup parent) {
+        return new OrderItemViewHolder(inflate(parent, R.layout.list_order_item));
     }
 
     @Override
-    public void bindViewHolder(CartItemViewHolder holder, Item item) {
+    public void bindViewHolder(OrderItemViewHolder holder, Item item) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ItemListActivity.itemListActivity);
         CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(holder.itemView.getContext());
         circularProgressDrawable.setStrokeWidth(5);
@@ -65,7 +66,7 @@ public class CartItemBinder extends ItemBinder<Item, CartItemBinder.CartItemView
         return "";
     }
 
-    static class CartItemViewHolder extends ItemViewHolder<Item> {
+    static class OrderItemViewHolder extends ItemViewHolder<Item> {
 
         ImageView imageView;
         TextView textViewItemName;
@@ -74,19 +75,13 @@ public class CartItemBinder extends ItemBinder<Item, CartItemBinder.CartItemView
         TextView textViewItemType;
 
 
-        public CartItemViewHolder(View itemView) {
+        public OrderItemViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewItem);
             textViewItemName = itemView.findViewById(R.id.textViewItemName);
             textViewItemMake = itemView.findViewById(R.id.textViewItemMake);
             textViewItemPrice = itemView.findViewById(R.id.textViewItemPrice);
             textViewItemType = itemView.findViewById(R.id.textViewItemType);
-            Button button = itemView.findViewById(R.id.buttonRemove);
-            button.setOnClickListener(v -> {
-                Item item = getItem();
-                ShoppingCart.getInstance(itemView.getContext()).remove(item);
-                Toast.makeText(itemView.getContext(), getItem().getName() + " removed from cart", Toast.LENGTH_LONG).show();
-            });
         }
     }
 }

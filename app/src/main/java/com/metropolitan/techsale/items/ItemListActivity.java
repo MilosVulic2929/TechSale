@@ -35,6 +35,7 @@ import com.metropolitan.techsale.items.model.Storage;
 import com.metropolitan.techsale.items.service.ItemServiceImpl;
 import com.metropolitan.techsale.items.service.ItemsService;
 import com.metropolitan.techsale.order.OrderActivity;
+import com.metropolitan.techsale.orderlist.OrderListActivity;
 import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
 import com.metropolitan.techsale.shoppingcart.ShoppingCartActivity;
@@ -64,7 +65,7 @@ import static com.metropolitan.techsale.utils.Utils.isConnected;
 @SuppressWarnings("all")
 public class ItemListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private static List<Item> ITEMS_CACHE = new ArrayList<>();
+    private static final List<Item> ITEMS_CACHE = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private Button buttonCart;
@@ -91,7 +92,7 @@ public class ItemListActivity extends AppCompatActivity implements AdapterView.O
         if (buttonCart != null)
             buttonCart.setText(String.format("Cart(%d)", items.size()));
         if (buttonPayment != null)
-            buttonPayment.setText(String.format("Pay(%.2f)", total));
+            buttonPayment.setText(String.format("Order(%.2f)", total));
 
         Log.d("random_tag", "Called " + items.size());
     });
@@ -186,10 +187,7 @@ public class ItemListActivity extends AppCompatActivity implements AdapterView.O
 
         //TODO go to OrderActivity
         if (ShoppingCart.getInstance(this).getItems().size() > 0) {
-            Intent intent = new Intent(this, OrderActivity.class);
-            String vrednost = buttonPayment.getText().toString().substring(buttonPayment.getText().toString().indexOf("(") + 1, buttonPayment.getText().toString().lastIndexOf(")"));
-            intent.putExtra("Total", Double.valueOf(vrednost));
-            startActivity(intent);
+            startActivity(new Intent(this, OrderActivity.class));
         } else {
             Toast.makeText(this, "Shopping Cart is empty", Toast.LENGTH_SHORT).show();
         }
@@ -342,6 +340,7 @@ public class ItemListActivity extends AppCompatActivity implements AdapterView.O
         getMenuInflater().inflate(R.menu.menu, menu);
         if (!Utils.checkHidingLogoutItem(this)) {
             menu.findItem(R.id.action_logout).setVisible(false);
+            menu.findItem(R.id.action_orders).setVisible(false);
         }
         return true;
     }
@@ -358,6 +357,8 @@ public class ItemListActivity extends AppCompatActivity implements AdapterView.O
                     .apply();
             ShoppingCart.getInstance(this).removeAll();
             startActivity(new Intent(this, MainActivity.class));
+        }   else if(item.getItemId() == R.id.action_orders){
+            startActivity(new Intent(this, OrderListActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

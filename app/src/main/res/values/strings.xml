@@ -48,5 +48,12 @@
     <string name="logout">Logout</string>
     <string name="address">Address</string>
     <string name="phone_number">Phone Number</string>
+    <string name="title_order_list">Orders</string>
+    <string name="title_order_detail">Order Detail</string>
+
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="username">Username</string>
+    <string name="orders">Your Orders</string>
+    <string name="create_order">Create Order</string>
 
 </resources>
