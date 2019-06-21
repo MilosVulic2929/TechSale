@@ -117,6 +117,7 @@ public class ItemListActivity extends AppCompatActivity {
         Toast.makeText(this, "Items " + recyclerView.getAdapter().getItemCount(), Toast.LENGTH_LONG).show();
         convert(to, preferences);
         itemListActivity = this;
+        invalidateOptionsMenu();
 
         ItemsService itemsService= new ItemServiceImpl().getItemService();
         itemsService.getItems().enqueue(new Callback<List<Item>>() {
@@ -312,6 +313,9 @@ public class ItemListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        if(!Utils.checkHidingLogoutItem(this)){
+            menu.findItem(R.id.action_logout).setVisible(false);
+        }
         return true;
     }
 

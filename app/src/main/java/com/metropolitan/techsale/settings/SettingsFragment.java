@@ -1,5 +1,6 @@
 package com.metropolitan.techsale.settings;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -11,9 +12,18 @@ import android.util.Log;
 
 import com.metropolitan.techsale.MainActivity;
 import com.metropolitan.techsale.R;
+import com.metropolitan.techsale.auth.LoginActivity;
+import com.metropolitan.techsale.auth.RegistrationActivity;
+import com.metropolitan.techsale.items.ItemListActivity;
+import com.metropolitan.techsale.order.OrderActivity;
+import com.metropolitan.techsale.orderlist.OrderListActivity;
+import com.metropolitan.techsale.shoppingcart.ShoppingCartActivity;
 import com.metropolitan.techsale.utils.Utils;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -31,13 +41,29 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         switchThemePref.setOnPreferenceChangeListener((preference, o) -> {
             Utils.setStyleTheme(preferences, getActivity());
             Objects.requireNonNull(getActivity()).recreate();
-            MainActivity.mainActivity.recreate();
+            recreating();
             return true;
         });
 
         currenciesList.setOnPreferenceChangeListener((preference, o) -> {
             MainActivity.oldValue = currenciesList.getValue();
             return true;
+        });
+    }
+
+    private void recreating() {
+        List<Activity> list = Stream.of(MainActivity.mainActivity,
+                ShoppingCartActivity.shoppingCartActivity,
+                OrderListActivity.orderListActivity,
+                OrderActivity.orderActivity,
+                ItemListActivity.itemListActivity,
+                RegistrationActivity.registrationActivity,
+                LoginActivity.loginActivity).collect(Collectors.toList());
+
+        list.forEach(item -> {
+            if (item != null) {
+                item.recreate();
+            }
         });
     }
 }
