@@ -13,7 +13,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.metropolitan.techsale.MainActivity;
@@ -58,13 +60,14 @@ import static com.metropolitan.techsale.utils.Utils.isConnected;
 
 
 @SuppressWarnings("all")
-public class ItemListActivity extends AppCompatActivity {
+public class ItemListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    private static List<Item> ITEMS_CACHE = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private Button buttonCart;
     private Button buttonPayment;
-    private List<Item> itemList = new ArrayList<>();
-
+    private List<Item> filteredItemsList = new ArrayList<>();
     private ListSection<Item> listSection;
 
     private CurrencyConverterService currencyConverterService;
@@ -101,6 +104,8 @@ public class ItemListActivity extends AppCompatActivity {
         buttonCart = findViewById(R.id.buttonCart);
         buttonPayment = findViewById(R.id.buttonPayment);
         recyclerView = findViewById(R.id.recyclerViewItems);
+        Spinner spinner = findViewById(R.id.spinnerItemFilter);
+        spinner.setOnItemSelectedListener(this);
 
         currencyConverterService = new CurrencyConverterServiceImpl().getCurrencyConverterService();
         settings(preferences);
@@ -118,28 +123,32 @@ public class ItemListActivity extends AppCompatActivity {
         convert(to, preferences);
         itemListActivity = this;
 
-        ItemsService itemsService= new ItemServiceImpl().getItemService();
-        itemsService.getItems().enqueue(new Callback<List<Item>>() {
-            @Override
-            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                Log.d("random_tag", "Code:"+response.code());
-                List<Item> items = response.body();
-                Log.d("random_tag", "Items " + Arrays.toString( items.toArray()));
-                if(!USE_TEST_DATA){
-                    itemList.clear();
-                    itemList.addAll(items);
-                    if (recyclerView != null && recyclerView.getAdapter() != null){
-                        Log.d("random_tag", "into recycleview " + listSection.size());
-                        recyclerView.getAdapter().notifyDataSetChanged();
+        if(ITEMS_CACHE.isEmpty()){
+            ItemsService itemsService= new ItemServiceImpl().getItemService();
+            itemsService.getItems().enqueue(new Callback<List<Item>>() {
+                @Override
+                public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                    Log.d("random_tag", "Code:"+response.code());
+                    List<Item> items = response.body();
+                    Log.d("random_tag", "Items " + Arrays.toString( items.toArray()));
+                    if(!USE_TEST_DATA){
+                        ITEMS_CACHE.clear();
+                        ITEMS_CACHE.addAll(items);
+                        filteredItemsList.clear();
+                        filteredItemsList.addAll(items);
+                        if (recyclerView != null && recyclerView.getAdapter() != null){
+                            Log.d("random_tag", "into recycleview " + listSection.size());
+                            recyclerView.getAdapter().notifyDataSetChanged();
+                        }
                     }
                 }
-            }
-            @Override
-            public void onFailure(Call<List<Item>> call, Throwable t) {
-                Log.d("random_tag", "Error:"  + t.toString());
-                Toast.makeText(ItemListActivity.this, "Failed to load items, please try again", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<List<Item>> call, Throwable t) {
+                    Log.d("random_tag", "Error:"  + t.toString());
+                    Toast.makeText(ItemListActivity.this, "Failed to load items, please try again", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
     }
 
@@ -191,7 +200,7 @@ public class ItemListActivity extends AppCompatActivity {
                 new GpuBinder(),
                 new StorageBinder());
         listSection = new ListSection<>();
-        listSection.addAll(itemList);
+        listSection.addAll(filteredItemsList);
         adapter.addSection(listSection);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -199,16 +208,16 @@ public class ItemListActivity extends AppCompatActivity {
 
     private void loadTestData() {
         // TODO info - test podaci
-        itemList.add(new RamMemory(1, "Furry", "Kingstone", 70, 14,
+        filteredItemsList.add(new RamMemory(1, "Furry", "Kingstone", 70, 14,
                 8, 2400, "DDR4", ""));
-        itemList.add(new RamMemory(2, "Furry", "Kingstone", 110, 14,
+        filteredItemsList.add(new RamMemory(2, "Furry", "Kingstone", 110, 14,
                 16, 2400, "DDR4", ""));
-        itemList.add(new Processor(3, "i5 6600k", "Intel", 240, 10,
+        filteredItemsList.add(new Processor(3, "i5 6600k", "Intel", 240, 10,
                 4, 4.0, "1151",
                 "https://images-na.ssl-images-amazon.com/images/I/81SY-P8siHL._SX425_.jpg"));
-        itemList.add(new Gpu(4, "GTX 1060", "Asus", 330, 34,
+        filteredItemsList.add(new Gpu(4, "GTX 1060", "Asus", 330, 34,
                 6, 1280, 8, 1708, "https://c1.neweggimages.com/ProductImage/14-126-133-07.jpg"));
-        itemList.add(new Storage(5, "WD Blue", "Western Digital", 45, 13,
+        filteredItemsList.add(new Storage(5, "WD Blue", "Western Digital", 45, 13,
                 1024, Storage.DiskType.HDD, "7200RPM", ""));
     }
 
@@ -265,8 +274,8 @@ public class ItemListActivity extends AppCompatActivity {
                         String s = conversionResult.toString().substring(conversionResult.toString().indexOf(to));
                         String s1 = conversionResult.toString().substring(conversionResult.toString().indexOf(base));
 
-                        for (int i = 0; i < itemList.size(); i++) {
-                            itemList.get(i).setPrice(itemList.get(i).getPrice() * Double.valueOf(s.substring(s.indexOf(to) + 5, s.indexOf(","))));
+                        for (int i = 0; i < filteredItemsList.size(); i++) {
+                            filteredItemsList.get(i).setPrice(filteredItemsList.get(i).getPrice() * Double.valueOf(s.substring(s.indexOf(to) + 5, s.indexOf(","))));
                         }
                         if (!base.equals(to)) {
 
@@ -336,5 +345,19 @@ public class ItemListActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selected = (String) parent.getItemAtPosition(position);
+        Log.d("random_tag", "Selected: " + selected);
+        if(selected.equals("ALL")){
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        parent.setSelection(0);
     }
 }

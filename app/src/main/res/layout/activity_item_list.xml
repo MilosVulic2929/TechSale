@@ -8,6 +8,12 @@
     tools:context=".items.ItemListActivity"
     android:padding="10dp">
 
+    <Spinner
+        android:id="@+id/spinnerItemFilter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/itemTypes"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewItems"
         android:layout_width="match_parent"
