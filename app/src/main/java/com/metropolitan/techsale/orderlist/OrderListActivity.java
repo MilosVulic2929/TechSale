@@ -69,7 +69,7 @@ public class OrderListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);*/
         Objects.requireNonNull(getSupportActionBar()).setTitle(getTitle());
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-       // toolbar.setTitle(getTitle());
+        // toolbar.setTitle(getTitle());
 
         if (findViewById(R.id.order_detail_container) != null) {
             mTwoPane = true;
@@ -85,31 +85,27 @@ public class OrderListActivity extends AppCompatActivity {
         if (token != null && token.isEmpty() && username != null && username.isEmpty()) {
 
         } else {
-
-            if (ORDERS_CACHE.isEmpty()) {
-                new OrderServiceImpl().getOrderService().getAllOrders("Bearer " + token, username).enqueue(new Callback<List<Order>>() {
-                    @Override
-                    public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
-                        Log.d("random_tag", "Response code: " + response.code());
-                        if (response.isSuccessful()) {
-                            List<Order> orders = response.body();
-                            ORDERS_CACHE.clear();
-                            if (orders != null){
-                                ORDERS_CACHE.addAll(orders);
-                            }
-                            recyclerView.getAdapter().notifyDataSetChanged();
-                        } else {
-                            Log.d("random_tag", "Response failed: " + response.message() + ", " + response.code());
+            new OrderServiceImpl().getOrderService().getAllOrders("Bearer " + token, username).enqueue(new Callback<List<Order>>() {
+                @Override
+                public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                    Log.d("random_tag", "Response code: " + response.code());
+                    if (response.isSuccessful()) {
+                        List<Order> orders = response.body();
+                        ORDERS_CACHE.clear();
+                        if (orders != null) {
+                            ORDERS_CACHE.addAll(orders);
                         }
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                    } else {
+                        Log.d("random_tag", "Response failed: " + response.message() + ", " + response.code());
                     }
+                }
 
-                    @Override
-                    public void onFailure(Call<List<Order>> call, Throwable t) {
-                        Log.d("random_tag", "Error: " + t.getMessage());
-                    }
-                });
-            }
-
+                @Override
+                public void onFailure(Call<List<Order>> call, Throwable t) {
+                    Log.d("random_tag", "Error: " + t.getMessage());
+                }
+            });
         }
         assert recyclerView != null;
         setupRecyclerView(recyclerView);
@@ -170,8 +166,8 @@ public class OrderListActivity extends AppCompatActivity {
             holder.textViewOrderFullName.setText(String.format("Name: %s %s", order.getFirstName(), order.getLastName()));
             holder.textViewOrderPhone.setText(String.format("Phone: %s", order.getPhone()));
             double total = 0;
-            for(Item i : order.getItems())
-                total+=i.getPrice();
+            for (Item i : order.getItems())
+                total += i.getPrice();
 
             holder.textViewOrderTotalPrice.setText(String.format("Price: %.2f", total));
             holder.itemView.setTag(position);

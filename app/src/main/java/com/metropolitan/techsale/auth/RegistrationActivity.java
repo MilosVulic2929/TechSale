@@ -104,8 +104,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.d("random_tag", "Error:" + t.toString());
-                t.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Registration failed, please try again", Toast.LENGTH_SHORT).show();
             }
         });
     }
