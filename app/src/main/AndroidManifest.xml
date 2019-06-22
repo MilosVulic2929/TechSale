@@ -14,7 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/LightTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".orderlist.OrderListActivity"></activity>
+        <activity
+            android:name=".orderlist.OrderListActivity"
+            android:label="@string/title_order_list"
+            android:theme="@style/LightTheme.NoActionBar"></activity>
+        <activity
+            android:name=".orderlist.OrderDetailActivity"
+            android:label="@string/title_order_detail"
+            android:parentActivityName=".orderlist.OrderListActivity"
+            android:theme="@style/LightTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.metropolitan.techsale.orderlist.OrderListActivity" />
+        </activity>
         <activity android:name=".order.OrderActivity" />
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".shoppingcart.ShoppingCartActivity" />

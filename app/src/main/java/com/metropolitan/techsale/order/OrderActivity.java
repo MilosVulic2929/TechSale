@@ -17,6 +17,7 @@ import com.metropolitan.techsale.MainActivity;
 import com.metropolitan.techsale.R;
 import com.metropolitan.techsale.auth.LoginActivity;
 import com.metropolitan.techsale.items.model.Item;
+import com.metropolitan.techsale.orderlist.OrderListActivity;
 import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
 import com.metropolitan.techsale.utils.PreferenceKeys;
@@ -55,6 +56,9 @@ public class OrderActivity extends AppCompatActivity {
         textViewLastName = findViewById(R.id.editTextLastName);
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
 
+        String defaultAddress = preferences.getString("addressKey", "");
+        textViewAddress.setText(defaultAddress);
+
         double total = 0;
         for (Item i : ShoppingCart.getInstance(this).getItems())
             total += i.getPrice();
@@ -68,26 +72,27 @@ public class OrderActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, MODE_PRIVATE);
             String username = sharedPreferences.getString(PreferenceKeys.AUTH_USERNAME, "");
             String token = sharedPreferences.getString(PreferenceKeys.AUTH_TOKEN, "");
-
             if (!Objects.requireNonNull(token).isEmpty() && !Objects.requireNonNull(username).isEmpty()) {
                 OrderDTO order = new OrderDTO(ShoppingCart.getInstance(this).getItems().stream().map(Item::getId).collect(toList()),
                         username, textViewAddress.getText().toString(), textViewPhone.getText().toString(),
                         textViewFirstName.getText().toString(), textViewLastName.getText().toString());
-                new OrderServiceImpl().getOrderService().saveOrder("Bearer " + token, order).enqueue(new Callback<Order>() {
+                new OrderServiceImpl().getOrderService().saveOrder("Bearer " + token, order).enqueue(new Callback<String>() {
                     @Override
-                    public void onResponse(Call<Order> call, Response<Order> response) {
+                    public void onResponse(Call<String> call, Response<String> response) {
                         Log.d("random_tag", "Order code: " + response.code() + ", success: " + response.isSuccessful());
                         if (response.isSuccessful()) {
                             Toast.makeText(OrderActivity.this, "Order is saved",
                                     Toast.LENGTH_SHORT).show();
+                            ShoppingCart.getInstance(OrderActivity.this).removeAll();
+                            startActivity(new Intent(OrderActivity.this, OrderListActivity.class));
                         } else {
-                            Toast.makeText(OrderActivity.this, "Wait why mate",
+                            Toast.makeText(OrderActivity.this, "Failed to save order, please try again",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Order> call, Throwable t) {
+                    public void onFailure(Call<String> call, Throwable t) {
                         Log.d("random_tag", t.getMessage());
                         Toast.makeText(OrderActivity.this, "Failed to create order, please try again",
                                 Toast.LENGTH_SHORT).show();

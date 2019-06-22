@@ -16,6 +16,6 @@ public interface OrderService {
     Call<List<Order>> getAllOrders(@Header("Authorization") String token, @Path("username") String username);
 
     @POST("order/")
-    Call<Order> saveOrder(@Header("Authorization") String token, @Body OrderDTO order);
+    Call<String> saveOrder(@Header("Authorization") String token, @Body OrderDTO order);
 
 }

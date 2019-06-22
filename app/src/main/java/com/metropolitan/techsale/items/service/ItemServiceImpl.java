@@ -7,7 +7,7 @@ public class ItemServiceImpl extends AbstractRetrofitService {
     private ItemsService itemsService;
 
     public ItemServiceImpl() {
-        super("http://10.0.3.2:8090/"); //TODO set za geny (10.0.3.2)
+        super("http://10.0.2.2:8090/"); //TODO set za geny (10.0.3.2)
         this.itemsService = retrofit.create(ItemsService.class);
     }
 

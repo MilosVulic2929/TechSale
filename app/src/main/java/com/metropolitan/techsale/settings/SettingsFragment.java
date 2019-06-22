@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
-import android.util.Log;
 
 import com.metropolitan.techsale.MainActivity;
 import com.metropolitan.techsale.R;
@@ -16,6 +14,7 @@ import com.metropolitan.techsale.auth.LoginActivity;
 import com.metropolitan.techsale.auth.RegistrationActivity;
 import com.metropolitan.techsale.items.ItemListActivity;
 import com.metropolitan.techsale.order.OrderActivity;
+import com.metropolitan.techsale.orderlist.OrderDetailActivity;
 import com.metropolitan.techsale.orderlist.OrderListActivity;
 import com.metropolitan.techsale.shoppingcart.ShoppingCartActivity;
 import com.metropolitan.techsale.utils.Utils;
@@ -58,7 +57,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 OrderActivity.orderActivity,
                 ItemListActivity.itemListActivity,
                 RegistrationActivity.registrationActivity,
-                LoginActivity.loginActivity).collect(Collectors.toList());
+                LoginActivity.loginActivity,
+                OrderDetailActivity.orderDetailActivity).collect(Collectors.toList());
 
         list.forEach(item -> {
             if (item != null) {

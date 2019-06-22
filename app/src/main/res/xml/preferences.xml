@@ -41,13 +41,13 @@
 
     <android.support.v7.preference.PreferenceCategory
         android:key="creditCardCategoryKey"
-        android:title="@string/category_credit_card_title">
+        android:title="@string/category_address_title">
 
         <EditTextPreference
-            android:name="creditCardPreference"
-            android:key="creditCardKey"
-            android:summary="@string/summary_credit_card"
-            android:title="@string/credit_card_title" />
+            android:name="addressPreference"
+            android:key="addressKey"
+            android:summary="@string/summary_address"
+            android:title="@string/address_card_title" />
     </android.support.v7.preference.PreferenceCategory>
 
 </PreferenceScreen>

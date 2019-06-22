@@ -43,6 +43,11 @@ public class Processor extends Item{
     }
 
     @Override
+    public String getType() {
+        return "cpu";
+    }
+
+    @Override
     public String toString() {
         return "Processor{" +
                 "cores=" + cores +

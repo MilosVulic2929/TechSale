@@ -44,6 +44,11 @@ public class RamMemory extends Item {
     }
 
     @Override
+    public String getType() {
+        return "ram";
+    }
+
+    @Override
     public String toString() {
         return "RamMemory{" +
                 "memory=" + memory +

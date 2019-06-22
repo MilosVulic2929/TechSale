@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.metropolitan.techsale.MainActivity;
@@ -32,6 +35,7 @@ import com.metropolitan.techsale.items.model.Storage;
 import com.metropolitan.techsale.items.service.ItemServiceImpl;
 import com.metropolitan.techsale.items.service.ItemsService;
 import com.metropolitan.techsale.order.OrderActivity;
+import com.metropolitan.techsale.orderlist.OrderListActivity;
 import com.metropolitan.techsale.settings.SettingsActivity;
 import com.metropolitan.techsale.shoppingcart.ShoppingCart;
 import com.metropolitan.techsale.shoppingcart.ShoppingCartActivity;
@@ -46,6 +50,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import mva2.adapter.ListSection;
 import mva2.adapter.MultiViewAdapter;
@@ -58,13 +63,14 @@ import static com.metropolitan.techsale.utils.Utils.isConnected;
 
 
 @SuppressWarnings("all")
-public class ItemListActivity extends AppCompatActivity {
+public class ItemListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    private static final List<Item> ITEMS_CACHE = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private Button buttonCart;
     private Button buttonPayment;
-    private List<Item> itemList = new ArrayList<>();
-
+    private List<Item> filteredItemsList = new ArrayList<>();
     private ListSection<Item> listSection;
 
     private CurrencyConverterService currencyConverterService;
@@ -86,7 +92,7 @@ public class ItemListActivity extends AppCompatActivity {
         if (buttonCart != null)
             buttonCart.setText(String.format("Cart(%d)", items.size()));
         if (buttonPayment != null)
-            buttonPayment.setText(String.format("Pay(%.2f)", total));
+            buttonPayment.setText(String.format("Order(%.2f)", total));
 
         Log.d("random_tag", "Called " + items.size());
     });
@@ -101,6 +107,8 @@ public class ItemListActivity extends AppCompatActivity {
         buttonCart = findViewById(R.id.buttonCart);
         buttonPayment = findViewById(R.id.buttonPayment);
         recyclerView = findViewById(R.id.recyclerViewItems);
+        Spinner spinner = findViewById(R.id.spinnerItemFilter);
+        spinner.setOnItemSelectedListener(this);
 
         currencyConverterService = new CurrencyConverterServiceImpl().getCurrencyConverterService();
         settings(preferences);
@@ -119,28 +127,46 @@ public class ItemListActivity extends AppCompatActivity {
         itemListActivity = this;
         invalidateOptionsMenu();
 
-        ItemsService itemsService= new ItemServiceImpl().getItemService();
-        itemsService.getItems().enqueue(new Callback<List<Item>>() {
-            @Override
-            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                Log.d("random_tag", "Code:"+response.code());
-                List<Item> items = response.body();
-                Log.d("random_tag", "Items " + Arrays.toString( items.toArray()));
-                if(!USE_TEST_DATA){
-                    itemList.clear();
-                    itemList.addAll(items);
-                    if (recyclerView != null && recyclerView.getAdapter() != null){
-                        Log.d("random_tag", "into recycleview " + listSection.size());
-                        recyclerView.getAdapter().notifyDataSetChanged();
+        if (ITEMS_CACHE.isEmpty()) {
+            if (USE_TEST_DATA) {
+                loadTestData();
+            } else {
+                ItemsService itemsService = new ItemServiceImpl().getItemService();
+                itemsService.getItems().enqueue(new Callback<List<Item>>() {
+                    @Override
+                    public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                        Log.d("random_tag", "Code:" + response.code());
+                        List<Item> items = response.body();
+                        Log.d("random_tag", "Items " + Arrays.toString(items.toArray()));
+                        ITEMS_CACHE.clear();
+                        ITEMS_CACHE.addAll(items);
+                        /*
+                        filteredItemsList.clear();
+                        filteredItemsList.addAll(items);*/
+                        if (recyclerView != null && recyclerView.getAdapter() != null) {
+                            listSection.clear();
+                            listSection.addAll(ITEMS_CACHE);
+                            Log.d("random_tag", "into recycleview " + listSection.size());
+                            recyclerView.getAdapter().notifyDataSetChanged();
+                        }
                     }
-                }
+
+                    @Override
+                    public void onFailure(Call<List<Item>> call, Throwable t) {
+                        Log.d("random_tag", "Error:" + t.toString());
+                        Toast.makeText(ItemListActivity.this, "Failed to load items, please try again", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-            @Override
-            public void onFailure(Call<List<Item>> call, Throwable t) {
-                Log.d("random_tag", "Error:"  + t.toString());
-                Toast.makeText(ItemListActivity.this, "Failed to load items, please try again", Toast.LENGTH_SHORT).show();
+        } else {
+
+            if (recyclerView != null && recyclerView.getAdapter() != null) {
+                listSection.clear();
+                listSection.addAll(ITEMS_CACHE);
+                Log.d("random_tag", "into recycleview " + listSection.size());
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
-        });
+        }
 
     }
 
@@ -160,17 +186,15 @@ public class ItemListActivity extends AppCompatActivity {
     public void onClickGoToOrder(View view) {
 
         //TODO go to OrderActivity
-       if(ShoppingCart.getInstance(this).getItems().size() > 0){
-             Intent intent = new Intent(this, OrderActivity.class);
-             String vrednost = buttonPayment.getText().toString().substring(buttonPayment.getText().toString().indexOf("(") + 1, buttonPayment.getText().toString().lastIndexOf(")"));
-             intent.putExtra("Total", Double.valueOf(vrednost));
-             startActivity(intent);
+        if (ShoppingCart.getInstance(this).getItems().size() > 0) {
+            startActivity(new Intent(this, OrderActivity.class));
         } else {
             Toast.makeText(this, "Shopping Cart is empty", Toast.LENGTH_SHORT).show();
         }
     }
-    public void onClickGoToCart(View view){
-        if(ShoppingCart.getInstance(this).getItems().size() > 0){
+
+    public void onClickGoToCart(View view) {
+        if (ShoppingCart.getInstance(this).getItems().size() > 0) {
             Intent intent = new Intent(this, ShoppingCartActivity.class);
             startActivity(intent);
         } else {
@@ -192,7 +216,7 @@ public class ItemListActivity extends AppCompatActivity {
                 new GpuBinder(),
                 new StorageBinder());
         listSection = new ListSection<>();
-        listSection.addAll(itemList);
+        listSection.addAll(ITEMS_CACHE);
         adapter.addSection(listSection);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -200,16 +224,16 @@ public class ItemListActivity extends AppCompatActivity {
 
     private void loadTestData() {
         // TODO info - test podaci
-        itemList.add(new RamMemory(1, "Furry", "Kingstone", 70, 14,
+        ITEMS_CACHE.add(new RamMemory(1, "Furry", "Kingstone", 70, 14,
                 8, 2400, "DDR4", ""));
-        itemList.add(new RamMemory(2, "Furry", "Kingstone", 110, 14,
+        ITEMS_CACHE.add(new RamMemory(2, "Furry", "Kingstone", 110, 14,
                 16, 2400, "DDR4", ""));
-        itemList.add(new Processor(3, "i5 6600k", "Intel", 240, 10,
+        ITEMS_CACHE.add(new Processor(3, "i5 6600k", "Intel", 240, 10,
                 4, 4.0, "1151",
                 "https://images-na.ssl-images-amazon.com/images/I/81SY-P8siHL._SX425_.jpg"));
-        itemList.add(new Gpu(4, "GTX 1060", "Asus", 330, 34,
+        ITEMS_CACHE.add(new Gpu(4, "GTX 1060", "Asus", 330, 34,
                 6, 1280, 8, 1708, "https://c1.neweggimages.com/ProductImage/14-126-133-07.jpg"));
-        itemList.add(new Storage(5, "WD Blue", "Western Digital", 45, 13,
+        ITEMS_CACHE.add(new Storage(5, "WD Blue", "Western Digital", 45, 13,
                 1024, Storage.DiskType.HDD, "7200RPM", ""));
     }
 
@@ -266,8 +290,8 @@ public class ItemListActivity extends AppCompatActivity {
                         String s = conversionResult.toString().substring(conversionResult.toString().indexOf(to));
                         String s1 = conversionResult.toString().substring(conversionResult.toString().indexOf(base));
 
-                        for (int i = 0; i < itemList.size(); i++) {
-                            itemList.get(i).setPrice(itemList.get(i).getPrice() * Double.valueOf(s.substring(s.indexOf(to) + 5, s.indexOf(","))));
+                        for (int i = 0; i < ITEMS_CACHE.size(); i++) {
+                            ITEMS_CACHE.get(i).setPrice(ITEMS_CACHE.get(i).getPrice() * Double.valueOf(s.substring(s.indexOf(to) + 5, s.indexOf(","))));
                         }
                         if (!base.equals(to)) {
 
@@ -299,12 +323,13 @@ public class ItemListActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     // Connection error handling
                     Log.d("random_tag", "Error " + t.getMessage());
-                   Toast.makeText(ItemListActivity.this,
-                           "Error occurred while updating currency", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ItemListActivity.this,
+                            "Error occurred while updating currency", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -313,8 +338,9 @@ public class ItemListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        if(!Utils.checkHidingLogoutItem(this)){
+        if (!Utils.checkHidingLogoutItem(this)) {
             menu.findItem(R.id.action_logout).setVisible(false);
+            menu.findItem(R.id.action_orders).setVisible(false);
         }
         return true;
     }
@@ -323,7 +349,7 @@ public class ItemListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
-        } else if(item.getItemId() == R.id.action_logout){
+        } else if (item.getItemId() == R.id.action_logout) {
             SharedPreferences sharedPref = this.getSharedPreferences(PreferenceKeys.PREFERENCES_NAME, Context.MODE_PRIVATE);
             sharedPref.edit()
                     .putString(PreferenceKeys.AUTH_TOKEN, "")
@@ -331,6 +357,8 @@ public class ItemListActivity extends AppCompatActivity {
                     .apply();
             ShoppingCart.getInstance(this).removeAll();
             startActivity(new Intent(this, MainActivity.class));
+        }   else if(item.getItemId() == R.id.action_orders){
+            startActivity(new Intent(this, OrderListActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -340,5 +368,36 @@ public class ItemListActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selected = (String) parent.getItemAtPosition(position);
+        Log.d("random_tag", "Selected: " + selected);
+        if (selected.equals("ALL")) {
+            listSection.clear();
+            listSection.addAll(ITEMS_CACHE);
+            TextView textView = findViewById(R.id.textViewFilterMessage);
+            textView.setVisibility(View.INVISIBLE);
+        } else {
+            List<Item> filtered = ITEMS_CACHE.stream().filter(i ->
+                    i.getType().equals(selected.toLowerCase()))
+                    .collect(Collectors.toList());
+            Log.d("random_tag", "Filtered: " + filtered.size());
+            listSection.clear();
+            listSection.addAll(filtered);
+            if(filtered.size() < 1){
+                TextView textView = findViewById(R.id.textViewFilterMessage);
+                textView.setVisibility(View.VISIBLE);
+            } else {
+                TextView textView = findViewById(R.id.textViewFilterMessage);
+                textView.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        parent.setSelection(0);
     }
 }
